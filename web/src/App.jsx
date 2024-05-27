@@ -1,5 +1,7 @@
+import "./index.css";
+
 function App() {
-  return <div>안녕하세요</div>;
+  return <div className="m-20 text-3xl">즉석떡볶이 ㅎㅎ</div>;
 }
 
 export default App;
