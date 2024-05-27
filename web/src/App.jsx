@@ -1,7 +1,7 @@
-import "./index.css";
+import React from 'react';
 
 function App() {
-  return <div className="m-20 text-3xl">웹 만들기</div>;
+  return <div className='bg-emerald-200'>안녕하세요</div>;
 }
 
 export default App;
