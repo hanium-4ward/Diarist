@@ -1,0 +1,29 @@
+{
+  "extends": ["airbnb", "prettier"], //이 설정 파일은 airbnb 스타일 가이드와 prettier의 스타일 가이드를 확장한다.
+  "plugins": ["prettier"], //prettier 플러그인을 사용한다.
+  "rules": {
+    "prettier/prettier": ["error"], //prettier에서 발생한 모든 스타일 경고를 에러로 취급한다.
+    "no-unused-vars": "warn", //선언했으나 사용되지 않은 변수가 있다면 경고로 표시한다.
+    "no-undef": "off" //알 수 없는 값에 대해 경고를 끈다.
+  },
+  "env": {
+    "browser": true, //브라우저 환경에서 작동할지 여부를 설정한다.
+    "node": true, //Node 환경에서 작동할지 여부를 설정한다.
+    "es2021": true //ECMAScript 2021 표준을 지원할지 여부를 설정한다.
+  },
+  "overrides": [
+    {
+      "env": {
+        "node": true //Node 환경에서 작동할지 여부를 설정한다.
+      },
+      "files": [".eslintrc.{js,cjs}"], //이 설정이 적용되는 파일들의 패턴을 명시한다.
+      "parserOptions": {
+        "sourceType": "script" //설정 파일의 소스 타입을 'script'로 명시한다.
+      }
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest", //마지막 ECMASclima의 버전을 사용해 파싱한다.
+    "sourceType": "module" //전체 프로젝트의 소스 타입을 'module'로 명시한다.
+  }
+}
