@@ -10,3 +10,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC
+    tags-sorter: alpha
+
+#  paths-to-match:  - 특정 경로만 API 문서를 생성하고 싶을 때 사용
+#    - /api/**
+
