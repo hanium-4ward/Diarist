@@ -1,7 +1,15 @@
 import React from 'react';
+import {Routes, Route} from 'react-router-dom';
+import Calendar from './pages/Calendar';
+import WritingDiaryPage from './pages/WritingDiaryPage';
 
 function App() {
-  return <div className='bg-emerald-200'>안녕하세요</div>;
+  return (
+    <Routes>
+      <Route path='/' element={<Calendar />} />
+      <Route path='write' element={<WritingDiaryPage />} />
+    </Routes>
+  );
 }
 
 export default App;
