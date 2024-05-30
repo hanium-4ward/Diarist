@@ -1,21 +1,29 @@
-// src/hooks/useFonts.js
-import { useState, useEffect } from "react";
-import * as Font from "expo-font";
+import {useState, useEffect} from 'react';
+import * as Font from 'expo-font';
+import PretendardBlack from '../assets/fonts/Pretendard-Black.otf';
+import PretendardBold from '../assets/fonts/Pretendard-Bold.otf';
+import PretendardExtraBold from '../assets/fonts/Pretendard-ExtraBold.otf';
+import PretendardExtraLight from '../assets/fonts/Pretendard-ExtraLight.otf';
+import PretendardLight from '../assets/fonts/Pretendard-Light.otf';
+import PretendardMedium from '../assets/fonts/Pretendard-Medium.otf';
+import PretendardRegular from '../assets/fonts/Pretendard-Regular.otf';
+import PretendardSemiBold from '../assets/fonts/Pretendard-SemiBold.otf';
+import PretendardThin from '../assets/fonts/Pretendard-Thin.otf';
 
 const useFonts = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      "Pretendard-Black": require("../../assets/fonts/Pretendard-Black.ttf"),
-      "Pretendard-Bold": require("../../assets/fonts/Pretendard-Bold.ttf"),
-      "Pretendard-ExtraBold": require("../../assets/fonts/Pretendard-ExtraBold.ttf"),
-      "Pretendard-ExtraLight": require("../../assets/fonts/Pretendard-ExtraLight.ttf"),
-      "Pretendard-Light": require("../../assets/fonts/Pretendard-Light.ttf"),
-      "Pretendard-Medium": require("../../assets/fonts/Pretendard-Medium.ttf"),
-      "Pretendard-Regular": require("../../assets/fonts/Pretendard-Regular.ttf"),
-      "Pretendard-SemiBold": require("../../assets/fonts/Pretendard-SemiBold.ttf"),
-      "Pretendard-Thin": require("../../assets/fonts/Pretendard-Thin.ttf"),
+      'Pretendard-Black': PretendardBlack,
+      'Pretendard-Bold': PretendardBold,
+      'Pretendard-ExtraBold': PretendardExtraBold,
+      'Pretendard-ExtraLight': PretendardExtraLight,
+      'Pretendard-Light': PretendardLight,
+      'Pretendard-Medium': PretendardMedium,
+      'Pretendard-Regular': PretendardRegular,
+      'Pretendard-SemiBold': PretendardSemiBold,
+      'Pretendard-Thin': PretendardThin,
     });
     setFontsLoaded(true);
   };

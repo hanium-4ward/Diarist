@@ -1,28 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import * as Font from 'expo-font';
+import useFonts from './hooks/useFont';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 18,
+    marginVertical: 4,
+  },
+});
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      'Pretendard-Black': require('./assets/fonts/Pretendard-Black.otf'),
-      'Pretendard-Bold': require('./assets/fonts/Pretendard-Bold.otf'),
-      'Pretendard-ExtraBold': require('./assets/fonts/Pretendard-ExtraBold.otf'),
-      'Pretendard-ExtraLight': require('./assets/fonts/Pretendard-ExtraLight.otf'),
-      'Pretendard-Light': require('./assets/fonts/Pretendard-Light.otf'),
-      'Pretendard-Medium': require('./assets/fonts/Pretendard-Medium.otf'),
-      'Pretendard-Regular': require('./assets/fonts/Pretendard-Regular.otf'),
-      'Pretendard-SemiBold': require('./assets/fonts/Pretendard-SemiBold.otf'),
-      'Pretendard-Thin': require('./assets/fonts/Pretendard-Thin.otf'),
-    });
-    setFontsLoaded(true);
-  };
-
-  useEffect(() => {
-    loadFonts();
-  }, []);
+  const fontsLoaded = useFonts();
 
   if (!fontsLoaded) {
     return (
@@ -48,20 +46,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    marginVertical: 4,
-  },
-});
