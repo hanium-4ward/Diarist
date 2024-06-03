@@ -36,6 +36,9 @@ public class User extends BaseEntityWithUpdate {
 
     private LocalDateTime deletedAt;
 
+
+
+
     @Builder(access = AccessLevel.PRIVATE)// private 생성자를 만들어줌
     public User(String name, String email, SocialCode socialCode) {
         this.name = name;

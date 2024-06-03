@@ -47,6 +47,32 @@ public class DiaryController {
     }
 
 
+    @GetMapping(value = "/kafka-response",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter kafkaResponse() {
+        // kafka consumer 가 emitter 에 데이터를 보내면 emitter 가 클라이언트에게 데이터를 보냄
+        return createDiaryConsumerService.addEmitter();
+    }
+
+    @GetMapping(value = "/test-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter testSse() {
+        SseEmitter emitter = new SseEmitter(3600000L);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                for (int i = 0; i < 10; i++) {
+                    emitter.send(SseEmitter.event().data("Test message " + i));
+                    Thread.sleep(1000);
+                }
+                emitter.complete();
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        });
+        return emitter;
+    }
+
+
+
+
 
 
 
