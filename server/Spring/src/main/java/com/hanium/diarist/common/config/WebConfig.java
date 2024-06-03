@@ -18,6 +18,7 @@ public class WebConfig  implements WebMvcConfigurer {
 //                        "http://<YOUR_DJANGO_SERVER_IP>:8000" // 장고 서버 IP 주소
                         "http://localhost:9092", // kafka 서버
                         "http://localhost:2181" // zookeeper 서버
+
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
