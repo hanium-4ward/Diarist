@@ -14,8 +14,10 @@ public class WebConfig  implements WebMvcConfigurer {
                         "http://localhost:8081", // 리액트 네이티브 에뮬레이터 (iOS)
 //                        "http://<YOUR_DEVICE_IP>:8081", // 실제 디바이스의 IP 주소와 포트
                         "http://localhost:8000", // 장고 서버
-                        "http://localhost:8080/swagger-ui/index.html"
+                        "http://localhost:8080/swagger-ui/index.html",
 //                        "http://<YOUR_DJANGO_SERVER_IP>:8000" // 장고 서버 IP 주소
+                        "http://localhost:9092", // kafka 서버
+                        "http://localhost:2181" // zookeeper 서버
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
