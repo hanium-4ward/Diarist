@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
+import DrawerModal from '../components/DrawerModal';
 
 function DrawerListPage() {
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
     setOpenModal(true);
   };
+  const closeModal = () => {
+    setOpenModal(false);
+  };
   return (
-    <div>
+    <div className='relative'>
       {/* 페이지 h1 a11yhidden으로 숨길 예정 */}
       <h1>일기 작성</h1>
       {/* 상단 메뉴 컨테이너 */}
@@ -21,7 +25,7 @@ function DrawerListPage() {
         <button type='button'>동양화</button>
       </div>
       <div className='h-full grid grid-cols-2 place-items-center'>
-        <figure>
+        <figure onClick={handleModal}>
           <img src='/drawer.jpg' alt='화가이미지' />
           <figcaption>화가이름</figcaption>
         </figure>
@@ -46,6 +50,7 @@ function DrawerListPage() {
           <figcaption>화가이름</figcaption>
         </figure>
       </div>
+      {openModal && <DrawerModal openModal={openModal} closeModal={closeModal} />}
     </div>
   );
 }
