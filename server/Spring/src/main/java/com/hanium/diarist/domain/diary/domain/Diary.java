@@ -10,12 +10,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "deleted_at is null") // deleted_at 이 null 인 것만 조회
 public class Diary extends BaseEntityWithUpdate {
@@ -39,7 +42,7 @@ public class Diary extends BaseEntityWithUpdate {
     private Artist artist;
 
     @Column(nullable = false)
-    private LocalDateTime diaryDate;
+    private LocalDate diaryDate;
 
     @Column(length = 8013)
     private String content;
@@ -54,7 +57,7 @@ public class Diary extends BaseEntityWithUpdate {
     private Image image;
 
 
-    public Diary(User user, Emotion emotion, Artist artist, LocalDateTime diaryDate, String content, boolean isFavorite, Image image) {
+    public Diary(User user, Emotion emotion, Artist artist, LocalDate diaryDate, String content, boolean isFavorite, Image image) {
         this.user = user;
         this.emotion = emotion;
         this.artist = artist;
