@@ -16,16 +16,16 @@ function DrawCompletedPage() {
       />
       <div className='flex'>
         <figure>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img
-            alt='놀라움'
             src='https://www.itpedia.nl/wp-content/uploads/2018/02/Thinking_Face_Emoji.png'
             className='w-10'
           />
           <figcaption>#놀라움</figcaption>
         </figure>
         <figure>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img
-            alt='피카소'
             src='https://www.itpedia.nl/wp-content/uploads/2018/02/Thinking_Face_Emoji.png'
             className='w-10'
           />

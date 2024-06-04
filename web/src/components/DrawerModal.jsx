@@ -6,7 +6,7 @@ function DrawerModal({openModal, closeModal}) {
 
   return ReactDOM.createPortal(
     <div className='fixed inset-0  flex items-center justify-center backdrop-blur'>
-      <div className='bg-black p-8 rounded relative text-wh'>
+      <div className='bg-black p-8 rounded relative text-white'>
         <button
           type='button'
           onClick={closeModal}
