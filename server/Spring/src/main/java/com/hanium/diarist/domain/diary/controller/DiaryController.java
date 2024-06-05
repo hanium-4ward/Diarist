@@ -1,9 +1,12 @@
 package com.hanium.diarist.domain.diary.controller;
 
 import com.hanium.diarist.domain.diary.dto.AdResponse;
+import com.hanium.diarist.domain.diary.dto.BookmarkDiaryRequest;
+import com.hanium.diarist.domain.diary.dto.BookmarkDiaryResponse;
 import com.hanium.diarist.domain.diary.dto.CreateDiaryRequest;
 import com.hanium.diarist.domain.diary.service.CreateDiaryConsumerService;
 import com.hanium.diarist.domain.diary.service.CreateDiaryProducerService;
+import com.hanium.diarist.domain.diary.service.DiaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 
 @RestController
@@ -29,6 +33,7 @@ public class DiaryController {
 
     private final CreateDiaryProducerService createDiaryProducerService;
     private final CreateDiaryConsumerService createDiaryConsumerService;
+    private final DiaryService diaryService;
 
     @PostMapping("/create")
     @Operation(summary = "일기 생성 요청", description = "일기 생성 요청 API.")
@@ -47,34 +52,25 @@ public class DiaryController {
     }
 
 
-    @GetMapping(value = "/kafka-response",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/kafka-response", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter kafkaResponse() {
         // kafka consumer 가 emitter 에 데이터를 보내면 emitter 가 클라이언트에게 데이터를 보냄
         return createDiaryConsumerService.addEmitter();
     }
 
-    @GetMapping(value = "/test-sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter testSse() {
-        SseEmitter emitter = new SseEmitter(3600000L);
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                for (int i = 0; i < 10; i++) {
-                    emitter.send(SseEmitter.event().data("Test message " + i));
-                    Thread.sleep(1000);
-                }
-                emitter.complete();
-            } catch (Exception e) {
-                emitter.completeWithError(e);
-            }
-        });
-        return emitter;
+    @PostMapping("/bookmark")
+    @Operation(summary = "일기 즐겨찾기 (1개)", description = "일기 즐겨찾기 API.")
+    public ResponseEntity<BookmarkDiaryResponse> bookmarkDiary(@RequestBody BookmarkDiaryRequest request) {
+        BookmarkDiaryResponse response = diaryService.bookmarkDiary(request.getDiaryId(), request.isFavorite());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-
-
-
-
+    @PostMapping("/bookmark/delete")
+    @Operation(summary = "일기 즐겨찾기 해제", description = "앨범페이지 일기 즐겨찾기 해제 API")
+    public ResponseEntity<List<BookmarkDiaryResponse>> deleteBookmarkDiary(@RequestBody List<Long> diaryIdList) {
+        List<BookmarkDiaryResponse> bookmarkDiaryResponses = diaryService.deleteBookmarkDiary(diaryIdList);
+        return new ResponseEntity<>(bookmarkDiaryResponses, HttpStatus.OK);
+    }
 
 
 }
