@@ -1,12 +1,24 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 function DrawCompletedPage() {
+  const [px, setPx] = useState(0); // 초기 값 설정
+  useEffect(() => {
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    const fontPx = (20 * 457) / 160;
+    console.log(devicePixelRatio);
+    setPx(fontPx);
+    console.log(fontPx);
+  }, []);
   return (
     <>
+      <h1 className=' sr-only'>그림 완성 페이지 </h1>
       <div className='flex'>
-        <h1>2026년 3월 28일</h1>
-        <button type='button' aria-label='즐겨찾기' />
-        <img src='/star.png' alt='즐겨찾기 버튼' />
+        <h2 style={{fontSize: 42}} className='  font-[500] tracking-[-0.63px]'>
+          2026년 3월 28일
+        </h2>
+        <button type='button' aria-label='즐겨찾기'>
+          <img className='w-[50px] h-[50px]' src='/star.png' alt='즐겨찾기 버튼' />
+        </button>
       </div>
 
       <img
