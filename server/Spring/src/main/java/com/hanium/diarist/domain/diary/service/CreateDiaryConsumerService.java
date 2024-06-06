@@ -61,7 +61,7 @@ public class CreateDiaryConsumerService {
     @KafkaListener(topics = "create-diary-response", groupId = "diary")
     public void consumeCreateDiaryResponse(HashMap<String,Integer> message) {
         try {
-            Integer diaryId = Integer.parseInt(String.valueOf(message.get("diaryId")));
+            long diaryId = Long.parseLong(String.valueOf(message.get("diaryId")));
             Diary diary = diaryRepository.findByDiaryId(diaryId).orElseThrow(() -> new RuntimeException("일기가 없습니다."));
             CreateDiaryResponse createDiaryResponse = new CreateDiaryResponse(diary.getEmotion().getEmotionName(),diary.getEmotion().getEmotionPicture(),diary.getContent(),diary.getArtist().getArtistName(),diary.getArtist().getArtistPicture(),diary.getDiaryDate(),diary.getImage().getImageUrl());
 //            System.out.println(createDiaryResponse);
