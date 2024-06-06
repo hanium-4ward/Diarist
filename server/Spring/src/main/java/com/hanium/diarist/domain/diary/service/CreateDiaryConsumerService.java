@@ -2,25 +2,22 @@ package com.hanium.diarist.domain.diary.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanium.diarist.domain.diary.domain.Diary;
 import com.hanium.diarist.domain.diary.dto.CreateDiaryResponse;
+import com.hanium.diarist.domain.diary.exception.DiaryIdInvalidException;
+import com.hanium.diarist.domain.diary.exception.DiaryNotFoundException;
+import com.hanium.diarist.domain.diary.exception.JsonProcessException;
+import com.hanium.diarist.domain.diary.exception.SseException;
 import com.hanium.diarist.domain.diary.repository.DiaryRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -49,8 +46,11 @@ public class CreateDiaryConsumerService {
                 String jsonResponse = objectMapper.writeValueAsString(diaryResponse);
                 //System.out.println("Sending to emitter: " + jsonResponse);
                 emitter.send(SseEmitter.event().data(jsonResponse));
-            } catch (Exception e) {
+            }catch (JsonProcessingException e) {
+                throw new JsonProcessException();
+            } catch (IOException e) {
                 this.emitters.remove(emitter);
+                throw new SseException();
             }
         }
     }
@@ -62,13 +62,12 @@ public class CreateDiaryConsumerService {
     public void consumeCreateDiaryResponse(HashMap<String,Integer> message) {
         try {
             long diaryId = Long.parseLong(String.valueOf(message.get("diaryId")));
-            Diary diary = diaryRepository.findByDiaryId(diaryId).orElseThrow(() -> new RuntimeException("일기가 없습니다."));
-            CreateDiaryResponse createDiaryResponse = new CreateDiaryResponse(diary.getEmotion().getEmotionName(),diary.getEmotion().getEmotionPicture(),diary.getContent(),diary.getArtist().getArtistName(),diary.getArtist().getArtistPicture(),diary.getDiaryDate(),diary.getImage().getImageUrl());
+            Diary diary = diaryRepository.findByDiaryIdWithDetails(diaryId).orElseThrow(() -> new DiaryNotFoundException());
+            CreateDiaryResponse createDiaryResponse = new CreateDiaryResponse(diary.getEmotion().getEmotionName(), diary.getEmotion().getEmotionPicture(), diary.getContent(), diary.getArtist().getArtistName(), diary.getArtist().getArtistPicture(), diary.getDiaryDate(), diary.getImage().getImageUrl());
 //            System.out.println(createDiaryResponse);
-            sendEmitters(createDiaryResponse);// json 형식으로 변경
-        } catch (Exception e) {
-            System.err.println("Error while consuming message: " + e.getMessage());
-            throw new RuntimeException(e);
+            sendEmitters(createDiaryResponse);
+        } catch (NumberFormatException e) {
+            throw new DiaryIdInvalidException();
         }
     }
 
