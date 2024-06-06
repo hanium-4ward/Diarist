@@ -18,27 +18,33 @@ function SelectDrawerPage() {
       </div>
       <div className='h-full grid grid-cols-2 place-items-center'>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
         <figure>
-          <img src='/drawer.jpg' alt='화가이미지' />
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <img src='/drawer.jpg' />
           <figcaption>화가이름</figcaption>
         </figure>
       </div>
