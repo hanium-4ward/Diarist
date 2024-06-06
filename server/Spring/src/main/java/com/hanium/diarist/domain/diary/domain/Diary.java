@@ -50,20 +50,20 @@ public class Diary extends BaseEntityWithUpdate {
     private LocalDateTime deletedAt;
 
     @NotNull
-    private boolean isFavorite;
+    private boolean favorite;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 
 
-    public Diary(User user, Emotion emotion, Artist artist, LocalDate diaryDate, String content, boolean isFavorite, Image image) {
+    public Diary(User user, Emotion emotion, Artist artist, LocalDate diaryDate, String content, boolean favorite, Image image) {
         this.user = user;
         this.emotion = emotion;
         this.artist = artist;
         this.diaryDate = diaryDate;
         this.content = content;
-        this.isFavorite = isFavorite;
+        this.favorite = favorite;
         this.image = null;
     }
 
@@ -84,7 +84,7 @@ public class Diary extends BaseEntityWithUpdate {
     }
 
     public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+        this.favorite = favorite;
     }
 
     public void setImage(Image image) {

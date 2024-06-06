@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     Optional<Diary> findByUserAndDiaryDate(User user, LocalDate diaryDate);
-    Optional<Diary> findByDiaryId(Integer diaryId);
+    Optional<Diary> findByDiaryId(long diaryId);
+
 }
