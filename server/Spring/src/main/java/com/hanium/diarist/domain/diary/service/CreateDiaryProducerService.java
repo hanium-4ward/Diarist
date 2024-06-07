@@ -4,23 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanium.diarist.domain.diary.domain.Diary;
 import com.hanium.diarist.domain.diary.dto.CreateDiaryRequest;
+import com.hanium.diarist.domain.diary.exception.JsonProcessException;
+import com.hanium.diarist.domain.diary.exception.KafkaConnectException;
 import com.hanium.diarist.domain.diary.repository.DiaryRepository;
 import com.hanium.diarist.domain.user.domain.User;
 import com.hanium.diarist.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaProducerException;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CreateDiaryProducerService {
 
@@ -35,11 +38,13 @@ public class CreateDiaryProducerService {
     public void sendCreateDiaryMessage(CreateDiaryRequest createDiaryRequest) {
         try {
             String message = objectMapper.writeValueAsString(createDiaryRequest);
-            kafkaTemplate.send(CreateTopicName, message);
+            sendKafkaMessage(CreateTopicName,message);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert CreateDiaryRequest to JSON", e);
         }
     }
+
+
 
     public boolean sendCreateDiaryMessageWithAd(CreateDiaryRequest createDiaryRequest) {
         LocalDate date = createDiaryRequest.getDiaryDate();// 일기 작성 날짜 가져옴
@@ -50,17 +55,32 @@ public class CreateDiaryProducerService {
             String message = objectMapper.writeValueAsString(createDiaryRequest);
             if (existingDiary.isPresent()|| !date.isEqual(LocalDate.now())) { // 당시 날짜의 일기가 있거나, 과거의 일기를 작성할 경우
                 // 광고 시청 필수
-                kafkaTemplate.send(reCreateTopicName, message);
+                sendKafkaMessage(reCreateTopicName, message);
                 watchAd();
                 return true;
             }else{// 과거 날짜 일기 작성
-                 kafkaTemplate.send(CreateTopicName, message);
+                 sendKafkaMessage(CreateTopicName, message);
                  return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        } catch (KafkaProducerException e){
+            throw new KafkaConnectException();
+        } catch (JsonProcessingException e) {
+            throw new JsonProcessException();
         }
+    }
+
+    private void sendKafkaMessage(String topic,String message) {
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
+        future.thenAccept(result -> {
+            // 성공 시 로직
+            log.info("Message sent successfully to topic {} with offset {}", result.getRecordMetadata().topic(), result.getRecordMetadata().offset());
+        }).exceptionally(ex -> {
+            // 실패 시 예외 처리
+            if (ex.getCause() instanceof TimeoutException) {
+                throw new KafkaConnectException();
+            }
+            return null;
+        });
     }
 
 
