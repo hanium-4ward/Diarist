@@ -17,7 +17,7 @@ public class Image extends BaseEntity {
     private Long imageId;
 
     @NotNull
-    @OneToOne(mappedBy = "image")
+    @OneToOne(mappedBy = "image",fetch = FetchType.LAZY)
     private Diary diary;
 
     @NotNull

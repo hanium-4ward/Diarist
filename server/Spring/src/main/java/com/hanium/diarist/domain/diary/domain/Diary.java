@@ -32,12 +32,12 @@ public class Diary extends BaseEntityWithUpdate {
     private User user;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotion_id",nullable = false)
     private Emotion emotion;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id",nullable = false)
     private Artist artist;
 
@@ -52,7 +52,7 @@ public class Diary extends BaseEntityWithUpdate {
     @NotNull
     private boolean favorite;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 
