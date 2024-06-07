@@ -1,5 +1,6 @@
 package com.hanium.diarist.domain.diary.controller;
 
+import com.hanium.diarist.common.response.SuccessResponse;
 import com.hanium.diarist.domain.diary.dto.AdResponse;
 import com.hanium.diarist.domain.diary.dto.BookmarkDiaryRequest;
 import com.hanium.diarist.domain.diary.dto.BookmarkDiaryResponse;
@@ -46,9 +47,9 @@ public class DiaryController {
 
     @PostMapping
     @Operation(summary = "광고 시청", description = "광고 시청 API.")
-    public AdResponse createDiaryWithAd(@Valid @RequestBody CreateDiaryRequest createDiaryRequest) {
+    public SuccessResponse<AdResponse> createDiaryWithAd(@Valid @RequestBody CreateDiaryRequest createDiaryRequest) {
         boolean adRequired = createDiaryProducerService.sendCreateDiaryMessageWithAd(createDiaryRequest);
-        return new AdResponse(adRequired); // 광고 시청 필요 여부 반환
+        return SuccessResponse.of(new AdResponse(adRequired));// 광고 시청 여부 반환
     }
 
 
@@ -60,16 +61,16 @@ public class DiaryController {
 
     @PostMapping("/bookmark")
     @Operation(summary = "일기 즐겨찾기 (1개)", description = "일기 즐겨찾기 API.")
-    public ResponseEntity<BookmarkDiaryResponse> bookmarkDiary(@RequestBody BookmarkDiaryRequest request) {
+    public ResponseEntity<SuccessResponse<BookmarkDiaryResponse>> bookmarkDiary(@RequestBody BookmarkDiaryRequest request) {
         BookmarkDiaryResponse response = diaryService.bookmarkDiary(request.getDiaryId(), request.isFavorite());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return SuccessResponse.of(response).asHttp(HttpStatus.OK);
     }
 
     @PostMapping("/bookmark/delete")
     @Operation(summary = "일기 즐겨찾기 해제", description = "앨범페이지 일기 즐겨찾기 해제 API")
-    public ResponseEntity<List<BookmarkDiaryResponse>> deleteBookmarkDiary(@RequestBody List<Long> diaryIdList) {
+    public ResponseEntity<SuccessResponse<List<BookmarkDiaryResponse>>> deleteBookmarkDiary(@RequestBody List<Long> diaryIdList) {
         List<BookmarkDiaryResponse> bookmarkDiaryResponses = diaryService.deleteBookmarkDiary(diaryIdList);
-        return new ResponseEntity<>(bookmarkDiaryResponses, HttpStatus.OK);
+        return SuccessResponse.of(bookmarkDiaryResponses).asHttp(HttpStatus.OK);
     }
 
 

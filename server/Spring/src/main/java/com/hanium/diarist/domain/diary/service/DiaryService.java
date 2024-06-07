@@ -2,6 +2,7 @@ package com.hanium.diarist.domain.diary.service;
 
 import com.hanium.diarist.domain.diary.domain.Diary;
 import com.hanium.diarist.domain.diary.dto.BookmarkDiaryResponse;
+import com.hanium.diarist.domain.diary.exception.DiaryNotFoundException;
 import com.hanium.diarist.domain.diary.repository.DiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class DiaryService {
     public BookmarkDiaryResponse bookmarkDiary(Long diaryId, boolean favorite) {
         Optional<Diary> diary = diaryRepository.findByDiaryId(diaryId);
         if(!diary.isPresent()){
-            throw new IllegalArgumentException("해당 일기가 존재하지 않습니다." + diaryId);
+            throw new DiaryNotFoundException();
         }
         Diary updateDiary = diary.get();
         updateDiary.setFavorite(favorite);
