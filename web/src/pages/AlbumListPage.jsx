@@ -1,20 +1,49 @@
-import React from 'react';
+import {React, useState} from 'react';
 import ListAlbum from '../components/ListAlbum';
+import ThumbnailAlbum from '../components/ThumbnailAlbum';
 
 function AlbumListPage() {
+  const [view, setView] = useState('thumbnail');
+
+  const handleListView = () => {
+    setView('list');
+  };
+
+  const handleThumbnailView = () => {
+    setView('thumbnail');
+  };
+
   return (
     <div className='px-[4.6875%] pt-5'>
-      <h1 className='sr-only'>앨범 리스트 보기 형식 페이지</h1>
+      {view === 'thumbnail' && <h1 className='sr-only'>앨범 썸네일 보기 형식 페이지</h1>}
+      {view === 'list' && <h1 className='sr-only'>앨범 리스트 보기 형식 페이지</h1>}
       {/* 상단 네비바 */}
       <div className='flex justify-between mb-[14px]'>
         <h2 className='text-[28px]'>나의 앨범</h2>
         <div className='flex justify-between gap-[14px] items-center'>
-          <button type='button'>
-            <img src='/thumbnail.png' alt='썸네일 보기 형식' className='w-5 h-5' />
-          </button>
-          <button type='button'>
-            <img src='/list.png' alt='리스트 보기 형식' className='w-5 h-5' />
-          </button>
+          {/* 리스트 보기 형식이 선택 된 경우 */}
+          {view === 'list' && (
+            <>
+              <button type='button' onClick={handleThumbnailView}>
+                <img src='/thumbnailFalse.png' alt='썸네일 보기 형식' className='w-5 h-5' />
+              </button>
+              <button type='button' onClick={handleListView}>
+                <img src='/listTrue.png' alt='리스트 보기 형식' className='w-5 h-5' />
+              </button>
+            </>
+          )}
+
+          {/* 썸네일 보기 형식이 선택 된 경우 */}
+          {view === 'thumbnail' && (
+            <>
+              <button type='button' onClick={handleThumbnailView}>
+                <img src='/thumbnailTrue.png' alt='썸네일 보기 형식' className='w-5 h-5' />
+              </button>
+              <button type='button' onClick={handleListView}>
+                <img src='/listFalse.png' alt='리스트 보기 형식' className='w-5 h-5' />
+              </button>
+            </>
+          )}
           <button
             type='button'
             className='text-xs py-[6px] px-[14px] bg-black text-white rounded-[100px]'
@@ -35,34 +64,44 @@ function AlbumListPage() {
         </button>
       </div>
 
+      {view === 'thumbnail' && (
+        <ul className='flex flex-wrap gap-[5%]'>
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' />
+        </ul>
+      )}
+
       {/* 앨범 리스트 */}
-      <ul className='flex flex-col gap-[14px]'>
-        {/* 리스트 한개를 컴포넌트로 만들어 map으롤 렌더링 할 예정 */}
-        <li className='flex gap-[14px] items-center'>
-          <img src='/diary.webp' alt='일기' className='w-[28%] rounded-[10px]' />
-          <div>
-            <div className='flex items-center justify-between'>
-              <h4 className='text-[24px]'>02.09</h4>
-              <div className='text-[14px] text-[#666] flex gap-[14px]'>
-                <p>#피카소</p>
-                <p>#행복</p>
-              </div>
-            </div>
-            <p className='text-[12px]'>
-              오늘은 새해의 첫날입니다. 새해 첫날부터 일기를 쓰는 것은 좋은 습관이 될 것 같습니다.
-              오늘은 새해의 첫날입니다.
-            </p>
-          </div>
-        </li>
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-        <ListAlbum />
-      </ul>
+      {view === 'list' && (
+        <ul className='flex flex-col gap-[14px]'>
+          <ListAlbum
+            src='diary.webp'
+            date='02.09'
+            artist='피카소'
+            emotion='행복'
+            content='오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강이다! 오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강'
+          />
+          <ListAlbum
+            src='diary.webp'
+            date='02.10'
+            artist='레오나르도 다빈치'
+            emotion='불행'
+            content='오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강이다! 오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강'
+          />
+          <ListAlbum
+            src='diary.webp'
+            date='05.10'
+            artist='뭉크'
+            emotion='우울'
+            content='오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강이다! 오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강'
+          />
+        </ul>
+      )}
     </div>
   );
 }
