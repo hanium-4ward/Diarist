@@ -1,4 +1,5 @@
 import {React, useState} from 'react';
+import ButtonContainer from '../components/ButtonContainer';
 
 function WritingDiaryPage() {
   const [inputCount, setInputCount] = useState(0);
@@ -31,18 +32,9 @@ function WritingDiaryPage() {
         onChange={onInputHandler}
       />
       <p className='text-right text-[12px]'>{inputCount}/1000</p>
+
       {/* 버튼 컨테이너 */}
-      <div className='flex justify-between mt-[40px]'>
-        <button type='button' className='w-[47.3%] py-[18px] border border-black rounded-[15px]'>
-          건너뛰기
-        </button>
-        <button
-          type='button'
-          className='w-[47.3%] py-[18px] border bg-black text-white rounded-[15px]'
-        >
-          다 적었어요
-        </button>
-      </div>
+      <ButtonContainer firstLabel='건너뛰기' secondLabel='다 적었어요' />
     </div>
   );
 }
