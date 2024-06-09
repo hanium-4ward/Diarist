@@ -1,6 +1,13 @@
-import React from 'react';
+import {React, useState} from 'react';
 
 function WritingDiaryPage() {
+  const [inputCount, setInputCount] = useState(0);
+
+  // 텍스트 입력 시 글자 수 세기
+  const onInputHandler = e => {
+    setInputCount(e.target.value.length);
+  };
+
   return (
     <div className='px-[4.6875%] h-screen'>
       {/* sr-only */}
@@ -19,8 +26,11 @@ function WritingDiaryPage() {
           당신의 일기는 선택한 화가의 그림으로 재탄생 됩니다.
         </p>
       </div>
-      <textarea className='border border-[#666] rounded-[20px] p-[28px] w-full text-[16px] h-1/2' />
-      <p className='text-right text-[12px]'>50/1000</p>
+      <textarea
+        className='border border-[#666] rounded-[20px] p-[28px] w-full text-[16px] h-1/2'
+        onChange={onInputHandler}
+      />
+      <p className='text-right text-[12px]'>{inputCount}/1000</p>
       {/* 버튼 컨테이너 */}
       <div className='flex justify-between mt-[40px]'>
         <button type='button' className='w-[47.3%] py-[18px] border border-black rounded-[15px]'>
