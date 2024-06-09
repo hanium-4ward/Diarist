@@ -1,5 +1,6 @@
 import {React, useState} from 'react';
 import ButtonContainer from '../components/ButtonContainer';
+import TopNavBar from '../components/TopNavBar';
 
 function WritingDiaryPage() {
   const [inputCount, setInputCount] = useState(0);
@@ -14,11 +15,8 @@ function WritingDiaryPage() {
       {/* sr-only */}
       <h1 className='sr-only'>일기 작성</h1>
       {/* 상단 메뉴 컨테이너 */}
-      <div className='flex items-center justify-between mb-3'>
-        <img src='/btn_prev.png' alt='뒤로가기' className='w-[13.28125%]' />
-        <p className='text-[18px]'>2/3</p>
-        <img src='/btn_x.png' alt='닫기' className='w-[13.28125%]' />
-      </div>
+      <TopNavBar progress={2} />
+
       {/* 일기 작성 타이틀 */}
       <div className='text-center mb-[30px]'>
         <h2 className='text-[28px]'>당신의 특별한 일상을</h2>
