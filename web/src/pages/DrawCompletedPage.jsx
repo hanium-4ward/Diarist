@@ -4,16 +4,14 @@ function DrawCompletedPage() {
   const [px, setPx] = useState(0); // 초기 값 설정
   useEffect(() => {
     const devicePixelRatio = window.devicePixelRatio || 1;
-    const fontPx = (20 * 457) / 160;
-    console.log(devicePixelRatio);
+    const fontPx = 20 * devicePixelRatio;
     setPx(fontPx);
-    console.log(fontPx);
   }, []);
   return (
     <>
-      <h1 className=' sr-only'>그림 완성 페이지 </h1>
+      <h1 className='sr-only'>그림 완성 페이지 </h1>
       <div className='flex'>
-        <h2 style={{fontSize: 42}} className='  font-[500] tracking-[-0.63px]'>
+        <h2 style={{fontSize: px}} className=' font-medium tracking-[-0.63px]'>
           2026년 3월 28일
         </h2>
         <button type='button' aria-label='즐겨찾기'>
