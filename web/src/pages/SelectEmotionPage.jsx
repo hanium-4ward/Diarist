@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState} from 'react';
 import ButtonContainer from '../components/ButtonContainer';
 import Emotion from '../components/Emotion';
 import TopNavBar from '../components/TopNavBar';
