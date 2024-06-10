@@ -7,6 +7,7 @@ import SelectDrawerPage from './pages/SelectDrawerPage';
 import DrawerListPage from './pages/DrawerListPage';
 import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
 import AlbumListPage from './pages/AlbumListPage';
+import SelectEmotionPage from './pages/SelectEmotionPage';
 import GlobalStyle from './GlobalStyle';
 
 function App() {
@@ -22,9 +23,9 @@ function App() {
         <Route path='write' element={<WritingDiaryPage />} />
         <Route path='thumbnail' element={<AlbumThumbnailPage />} />
         <Route path='list' element={<AlbumListPage />} />
+        <Route path='emotion' element={<SelectEmotionPage />} />
       </Routes>
     </>
   );
 }
-
 export default App;
