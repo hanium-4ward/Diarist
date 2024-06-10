@@ -2,7 +2,7 @@ import React from 'react';
 
 function ButtonContainer({firstLabel, secondLabel}) {
   return (
-    <div className='flex justify-between mt-[40px]'>
+    <div className='flex justify-between'>
       <button type='button' className='w-[47.3%] py-[18px] border border-black rounded-[15px]'>
         {firstLabel}
       </button>
