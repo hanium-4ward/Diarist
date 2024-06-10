@@ -29,7 +29,7 @@ function WritingDiaryPage() {
         className='border border-[#666] rounded-[20px] p-[28px] w-full text-[16px] h-1/2'
         onChange={onInputHandler}
       />
-      <p className='text-right text-[12px]'>{inputCount}/1000</p>
+      <p className='text-right text-[12px] mb-[40px]'>{inputCount}/1000</p>
 
       {/* 버튼 컨테이너 */}
       <ButtonContainer firstLabel='건너뛰기' secondLabel='다 적었어요' />
