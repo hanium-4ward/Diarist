@@ -1,9 +1,21 @@
-import React from 'react';
-import TopNavBar from '../components/TopNavBar';
-import Emotion from '../components/Emotion';
+import {React, useState, useEffect} from 'react';
 import ButtonContainer from '../components/ButtonContainer';
+import Emotion from '../components/Emotion';
+import TopNavBar from '../components/TopNavBar';
 
 function SelectEmotionPage() {
+  const [selectedEmotion, setSelectedEmotion] = useState(null);
+
+  useEffect(() => {
+    if (selectedEmotion !== null) {
+      console.log(selectedEmotion);
+    }
+  }, [selectedEmotion]);
+
+  const handleEmotionClick = id => {
+    setSelectedEmotion(id);
+  };
+
   return (
     <>
       <TopNavBar progress={1} />
@@ -20,18 +32,18 @@ function SelectEmotionPage() {
 
         {/* 감정선택 */}
         <ul className='mx-[5.9125%] flex flex-wrap gap-[14%] text-center'>
-          <Emotion src='/emotion.png' label='행복' />
-          <Emotion src='/emotion.png' label='기쁨' />
-          <Emotion src='/emotion.png' label='감사' />
-          <Emotion src='/emotion.png' label='기대' />
-          <Emotion src='/emotion.png' label='신남' />
-          <Emotion src='/emotion.png' label='설렘' />
-          <Emotion src='/emotion.png' label='슬픔' />
-          <Emotion src='/emotion.png' label='화남' />
-          <Emotion src='/emotion.png' label='짜증' />
-          <Emotion src='/emotion.png' label='걱정' />
-          <Emotion src='/emotion.png' label='후회' />
-          <Emotion src='/emotion.png' label='피곤' />
+          <Emotion src='/emotion.png' label='행복' id={1} onClick={() => handleEmotionClick(1)} />
+          <Emotion src='/emotion.png' label='기쁨' id={2} onClick={() => handleEmotionClick(2)} />
+          <Emotion src='/emotion.png' label='감사' id={3} onClick={() => handleEmotionClick(3)} />
+          <Emotion src='/emotion.png' label='기대' id={4} onClick={() => handleEmotionClick(4)} />
+          <Emotion src='/emotion.png' label='신남' id={5} onClick={() => handleEmotionClick(5)} />
+          <Emotion src='/emotion.png' label='설렘' id={6} onClick={() => handleEmotionClick(6)} />
+          <Emotion src='/emotion.png' label='슬픔' id={7} onClick={() => handleEmotionClick(7)} />
+          <Emotion src='/emotion.png' label='화남' id={8} onClick={() => handleEmotionClick(8)} />
+          <Emotion src='/emotion.png' label='짜증' id={9} onClick={() => handleEmotionClick(9)} />
+          <Emotion src='/emotion.png' label='걱정' id={10} onClick={() => handleEmotionClick(10)} />
+          <Emotion src='/emotion.png' label='후회' id={11} onClick={() => handleEmotionClick(11)} />
+          <Emotion src='/emotion.png' label='피곤' id={12} onClick={() => handleEmotionClick(12)} />
         </ul>
 
         <ButtonContainer firstLabel='건너뛰기' secondLabel='선택완료' />
