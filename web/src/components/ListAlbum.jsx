@@ -3,7 +3,7 @@ import React from 'react';
 function ListAlbum({src, date, artist, emotion, content}) {
   return (
     <li className='flex gap-[14px] items-center'>
-      <img src={src} alt='일기' className='w-[28%] rounded-[10px]' />
+      <img src={src} alt='일기' className='w-[30%] rounded-[10px]' />
       <div>
         <div className='flex items-center justify-between'>
           <h4 className='text-[24px]'>{date}</h4>

@@ -58,10 +58,10 @@ function AlbumListPage() {
         <h3 className='text-[20px]'>
           2024년 <span>봄</span>
         </h3>
-        <button type='button' className='flex items-center gap-2'>
-          <span>최신순</span>
-          <img src='/toggle.svg' alt='' className='w-2' />
-        </button>
+        <select className='text-[12px]'>
+          <option value='최신순'>최신순</option>
+          <option value='오래된순'>오래된순</option>
+        </select>
       </div>
 
       {view === 'thumbnail' && (
@@ -78,7 +78,7 @@ function AlbumListPage() {
 
       {/* 앨범 리스트 */}
       {view === 'list' && (
-        <ul className='flex flex-col gap-[14px]'>
+        <ul className='flex flex-col gap-[16px]'>
           <ListAlbum
             src='diary.webp'
             date='02.09'
