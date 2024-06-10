@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import ButtonContainer from '../components/ButtonContainer';
 import TopNavBar from '../components/TopNavBar';
@@ -11,12 +11,30 @@ function WritingDiaryPage() {
   // 글자수 세기
   const [inputCount, setInputCount] = useState(0);
   const [text, setText] = useState('');
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const onInputHandler = e => {
     const inputValue = e.target.value;
-    setInputCount(e.target.value.length);
+    setInputCount(inputValue.length);
     setText(inputValue);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      // window.innerHeight가 줄어들면 키보드가 올라온 것으로 간주
+      if (window.innerHeight < window.outerHeight - 100) {
+        setIsKeyboardVisible(true);
+      } else {
+        setIsKeyboardVisible(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // 초기 상태 확인
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className='px-[4.6875%] h-screen'>
@@ -34,14 +52,15 @@ function WritingDiaryPage() {
       </div>
       {/* 일기 작성 */}
       <textarea
-        className='border border-[#666] rounded-[20px] p-[28px] w-full text-[16px] h-1/2'
+        className={`border border-[#666] rounded-[20px] p-[28px] w-full text-[16px] transition-all duration-200 ${
+          isKeyboardVisible ? 'h-32' : 'h-1/2'
+        }`}
         onChange={onInputHandler}
         value={text}
       />
       <p className='text-right text-[12px] mb-[40px]'>{inputCount}/1000</p>
 
       {/* 버튼 컨테이너 */}
-
       <ButtonContainer
         firstLabel='건너뛰기'
         secondLabel='다 적었어요'
