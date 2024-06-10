@@ -13,6 +13,14 @@ function AlbumListPage() {
     setView('thumbnail');
   };
 
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const handleSelect = id => {
+    setSelectedItems(prevSelected =>
+      prevSelected.includes(id) ? prevSelected.filter(item => item !== id) : [...prevSelected, id],
+    );
+  };
+
   return (
     <div className='px-[4.6875%] pt-5'>
       {view === 'thumbnail' && <h1 className='sr-only'>앨범 썸네일 보기 형식 페이지</h1>}
@@ -47,6 +55,7 @@ function AlbumListPage() {
           <button
             type='button'
             className='text-xs py-[6px] px-[14px] bg-black text-white rounded-[100px]'
+            onClick={() => alert(`Selected Items: ${selectedItems.join(', ')}`)}
           >
             선택
           </button>
@@ -66,13 +75,13 @@ function AlbumListPage() {
 
       {view === 'thumbnail' && (
         <ul className='flex flex-wrap gap-[5%]'>
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
-          <ThumbnailAlbum src='/diary.webp' />
+          <ThumbnailAlbum src='/diary.webp' id={1} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={2} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={3} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={4} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={5} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={6} onSelect={handleSelect} />
+          <ThumbnailAlbum src='/diary.webp' id={7} onSelect={handleSelect} />
         </ul>
       )}
 
@@ -90,7 +99,7 @@ function AlbumListPage() {
             src='diary.webp'
             date='02.10'
             artist='레오나르도 다빈치'
-            emotion='불행'
+            emotion='없음'
             content='오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강이다! 오늘은 즐거운 하루 행복하자 모두 Fighting! 곧 종강'
           />
           <ListAlbum
