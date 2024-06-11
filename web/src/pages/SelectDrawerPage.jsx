@@ -1,6 +1,10 @@
 import React from 'react';
+import {useLocation} from 'react-router-dom';
 
 function SelectDrawerPage() {
+  const location = useLocation();
+  const info = location.state;
+  console.log(info);
   return (
     <div>
       {/* 페이지 h1 a11yhidden으로 숨길 예정 */}
@@ -16,7 +20,7 @@ function SelectDrawerPage() {
         <button type='button'>현대</button>
         <button type='button'>동양화</button>
       </div>
-      <div className='h-full grid grid-cols-2 place-items-center'>
+      <div className='grid h-full grid-cols-2 place-items-center'>
         <figure>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <img src='/drawer.jpg' />
