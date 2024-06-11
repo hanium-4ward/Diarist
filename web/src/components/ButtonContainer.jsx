@@ -23,10 +23,9 @@ function ButtonContainer({
   const navigate = useNavigate();
 
   return (
-    <div className='flex justify-between'>
+    <div>
       <button
         type='button'
-        className='w-[47.3%] py-[18px] border border-black rounded-[15px]'
         onClick={() =>
           navigate(`/${nextPath}`, {
             state: {
@@ -43,7 +42,6 @@ function ButtonContainer({
       </button>
       <button
         type='button'
-        className='w-[47.3%] py-[18px] border bg-black text-white rounded-[15px]'
         onClick={() =>
           navigate(`/${nextPath}`, {
             state: {

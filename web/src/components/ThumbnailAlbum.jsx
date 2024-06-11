@@ -8,15 +8,14 @@ function ThumbnailAlbum({src, id, onSelect, altText}) {
   };
 
   return (
-    <li className='basis-[30%] mb-[16px] list-none'>
+    <li>
       <button
         type='button'
         onClick={() => onSelect(id)}
         onKeyDown={handleKeyDown}
-        className='w-full p-0 bg-transparent border-none cursor-pointer'
         aria-label={`Thumbnail ${id}`}
       >
-        <img src={src} alt={altText || `Thumbnail image ${id}`} className='rounded-[10px]' />
+        <img src={src} alt={altText || `Thumbnail image ${id}`} />
       </button>
     </li>
   );

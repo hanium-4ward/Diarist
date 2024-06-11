@@ -1,33 +1,48 @@
-import {React, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ButtonContainer from '../components/ButtonContainer';
 import Emotion from '../components/Emotion';
 import TopNavBar from '../components/TopNavBar';
 
 function SelectEmotionPage() {
-  // 감정 번호 상태
   const [selectedEmotion, setSelectedEmotion] = useState('0');
+  const [widthRatio, setWidthRatio] = useState(1);
 
-  // 감정 선택 시 상태 변경
+  useEffect(() => {
+    const FIGMA_WIDTH = 640;
+    const updateWidthRatio = () => {
+      const newWidthRatio = window.innerWidth / FIGMA_WIDTH;
+      setWidthRatio(newWidthRatio);
+    };
+
+    // Initial call to set the width ratio
+    updateWidthRatio();
+
+    // Update the width ratio on window resize
+    window.addEventListener('resize', updateWidthRatio);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', updateWidthRatio);
+    };
+  }, []);
+
   const handleEmotionClick = id => {
     setSelectedEmotion(id);
   };
 
   return (
     <>
-      {/* 상단 메뉴 컨테이너 */}
-      <h1 className='sr-only'>감정 선택 페이지</h1>
+      <h1>감정 선택 페이지</h1>
       <TopNavBar progress={1} />
 
-      <div className='mx-[4.6875%]'>
-        {/* 감정 선택 타이틀 */}
-        <div className='text-center mb-[30px]'>
-          <h2 className='text-[28px]'>당신의 하루는 어떤</h2>
-          <h2 className='text-[28px]'>감정이였나요?</h2>
-          <p className='text-[16px]'>가장 많이 느낀 감정을 찾아보세요</p>
+      <div>
+        <div>
+          <h2>당신의 하루는 어떤</h2>
+          <h2>감정이였나요?</h2>
+          <p>가장 많이 느낀 감정을 찾아보세요</p>
         </div>
 
-        {/* 감정선택 */}
-        <ul className='mx-[7.8125%] flex flex-wrap gap-[14%] text-center'>
+        <ul>
           <Emotion src='/emotion.png' label='행복' onClick={() => handleEmotionClick(1)} />
           <Emotion src='/emotion.png' label='기쁨' onClick={() => handleEmotionClick(2)} />
           <Emotion src='/emotion.png' label='감사' onClick={() => handleEmotionClick(3)} />
@@ -42,7 +57,6 @@ function SelectEmotionPage() {
           <Emotion src='/emotion.png' label='피곤' onClick={() => handleEmotionClick(12)} />
         </ul>
 
-        {/* 버튼 컨테이너, 선택된 감정을 다음페이지(일기 작성페이지)로 전달 */}
         <ButtonContainer
           firstLabel='건너뛰기'
           secondLabel='선택완료'

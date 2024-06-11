@@ -22,21 +22,21 @@ function AlbumListPage() {
   };
 
   return (
-    <div className='px-[4.6875%] pt-5'>
-      {view === 'thumbnail' && <h1 className='sr-only'>앨범 썸네일 보기 형식 페이지</h1>}
-      {view === 'list' && <h1 className='sr-only'>앨범 리스트 보기 형식 페이지</h1>}
+    <div>
+      {view === 'thumbnail' && <h1>앨범 썸네일 보기 형식 페이지</h1>}
+      {view === 'list' && <h1>앨범 리스트 보기 형식 페이지</h1>}
       {/* 상단 네비바 */}
-      <div className='flex justify-between mb-[14px]'>
-        <h2 className='text-[28px]'>나의 앨범</h2>
-        <div className='flex justify-between gap-[14px] items-center'>
+      <div>
+        <h2>나의 앨범</h2>
+        <div>
           {/* 리스트 보기 형식이 선택 된 경우 */}
           {view === 'list' && (
             <>
               <button type='button' onClick={handleThumbnailView}>
-                <img src='/thumbnailFalse.png' alt='썸네일 보기 형식' className='w-5 h-5' />
+                <img src='/thumbnailFalse.png' alt='썸네일 보기 형식' />
               </button>
               <button type='button' onClick={handleListView}>
-                <img src='/listTrue.png' alt='리스트 보기 형식' className='w-5 h-5' />
+                <img src='/listTrue.png' alt='리스트 보기 형식' />
               </button>
             </>
           )}
@@ -45,16 +45,15 @@ function AlbumListPage() {
           {view === 'thumbnail' && (
             <>
               <button type='button' onClick={handleThumbnailView}>
-                <img src='/thumbnailTrue.png' alt='썸네일 보기 형식' className='w-5 h-5' />
+                <img src='/thumbnailTrue.png' alt='썸네일 보기 형식' />
               </button>
               <button type='button' onClick={handleListView}>
-                <img src='/listFalse.png' alt='리스트 보기 형식' className='w-5 h-5' />
+                <img src='/listFalse.png' alt='리스트 보기 형식' />
               </button>
             </>
           )}
           <button
             type='button'
-            className='text-xs py-[6px] px-[14px] bg-black text-white rounded-[100px]'
             onClick={() => alert(`Selected Items: ${selectedItems.join(', ')}`)}
           >
             선택
@@ -63,18 +62,18 @@ function AlbumListPage() {
       </div>
 
       {/* 앨범 네비바 */}
-      <div className='flex items-center justify-between mb-[16px]'>
-        <h3 className='text-[20px]'>
+      <div>
+        <h3>
           2024년 <span>봄</span>
         </h3>
-        <select className='text-[12px]'>
+        <select>
           <option value='최신순'>최신순</option>
           <option value='오래된순'>오래된순</option>
         </select>
       </div>
 
       {view === 'thumbnail' && (
-        <ul className='flex flex-wrap gap-[5%]'>
+        <ul>
           <ThumbnailAlbum src='/diary.webp' id={1} onSelect={handleSelect} />
           <ThumbnailAlbum src='/diary.webp' id={2} onSelect={handleSelect} />
           <ThumbnailAlbum src='/diary.webp' id={3} onSelect={handleSelect} />
@@ -87,7 +86,7 @@ function AlbumListPage() {
 
       {/* 앨범 리스트 */}
       {view === 'list' && (
-        <ul className='flex flex-col gap-[16px]'>
+        <ul>
           <ListAlbum
             src='diary.webp'
             date='02.09'
