@@ -1,14 +1,14 @@
 // GlobalStyle.js
 import {createGlobalStyle} from 'styled-components';
-import '../assets/font/Pretendard-Black.otf';
-import '../assets/font/Pretendard-Bold.otf';
-import '../assets/font/Pretendard-ExtraBold.otf';
-import '../assets/font/Pretendard-ExtraLight.otf';
-import '../assets/font/Pretendard-Light.otf';
-import '../assets/font/Pretendard-Medium.otf';
-import '../assets/font/Pretendard-Regular.otf';
-import '../assets/font/Pretendard-SemiBold.otf';
-import '../assets/font/Pretendard-Thin.otf';
+import './assets/fonts/Pretendard-Black.otf';
+import './assets/fonts/Pretendard-Bold.otf';
+import './assets/fonts/Pretendard-ExtraBold.otf';
+import './assets/fonts/Pretendard-ExtraLight.otf';
+import './assets/fonts/Pretendard-Light.otf';
+import './assets/fonts/Pretendard-Medium.otf';
+import './assets/fonts/Pretendard-Regular.otf';
+import './assets/fonts/Pretendard-SemiBold.otf';
+import './assets/fonts/Pretendard-Thin.otf';
 
 const GlobalStyle = createGlobalStyle`
     @font-face {
