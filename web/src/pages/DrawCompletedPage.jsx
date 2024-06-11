@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import styled from 'styled-components';
 
 const FIGMA_WIDTH = 640;
-const BASE_FONT_SIZE = 42; // 기준 폰트 크기
+
 const useWidthRatio = () => {
   const [widthRatio, setWidthRatio] = useState(1);
 
@@ -9,7 +10,6 @@ const useWidthRatio = () => {
     const updateWidthRatio = () => {
       const devicePixelRatio = window.devicePixelRatio || 1;
       const screenWidth = window.screen.width;
-      console.log(screenWidth);
       const logicalWidth = screenWidth / devicePixelRatio;
       const newWidthRatio = logicalWidth / FIGMA_WIDTH;
       setWidthRatio(newWidthRatio);
@@ -26,9 +26,12 @@ const useWidthRatio = () => {
   return widthRatio;
 };
 
+const StyledH2 = styled.h2`
+  font-size: ${props => props.widthRatio * 24}px;
+`;
+
 function DrawCompletedPage() {
   const widthRatio = useWidthRatio();
-  const fontSize = BASE_FONT_SIZE * widthRatio;
 
   return (
     <div>
@@ -36,7 +39,7 @@ function DrawCompletedPage() {
 
       <div>
         <div>
-          <h2 style={{fontSize: `${fontSize}px`}}>2026년 3월 28일</h2>
+          <StyledH2 widthRatio={widthRatio}>2026년 3월 28일</StyledH2>
         </div>
         <button type='button' aria-label='즐겨찾기'>
           <img src='/star.png' alt='즐겨찾기 버튼' />
