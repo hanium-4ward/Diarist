@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
 
   
     html, body, * {
-        font-family: 'Pretendard Variable', sans-serif;
+        font-family: 'Pretendard Variable', sans-serif; 
         margin: 0; /* 모든 요소의 기본 마진을 0으로 설정 */
         padding: 0; /* 모든 요소의 기본 패딩을 0으로 설정 */
     }
@@ -42,6 +42,7 @@ const GlobalStyle = createGlobalStyle`
     acronym,
     address,
     big,
+    button,
     cite,
     code,
     del,
