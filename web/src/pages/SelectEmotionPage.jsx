@@ -1,30 +1,51 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import styled, {useTheme} from 'styled-components';
 import ButtonContainer from '../components/ButtonContainer';
 import Emotion from '../components/Emotion';
 import TopNavBar from '../components/TopNavBar';
 
+const A11yHidden = styled.h1`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
+const H2 = styled.h2`
+  font-size: ${props => 42 * props.theme.widthRatio}px;
+  text-align: center;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.63px;
+`;
+
+const P = styled.p`
+  text-align: center;
+  font-size: ${props => 24 * props.theme.widthRatio}px;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: -0.36px;
+  margin-top: ${props => 20 * props.theme.widthRatio}px;
+`;
+
+const EmotionContainer = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${props => 60 * props.theme.widthRatio}px;
+  margin-top: ${props => 40 * props.theme.widthRatio}px;
+  margin-left: ${props => 80 * props.theme.widthRatio}px;
+  margin-right: ${props => 80 * props.theme.widthRatio}px;
+`;
+
 function SelectEmotionPage() {
+  const theme = useTheme();
+
   const [selectedEmotion, setSelectedEmotion] = useState('0');
-  const [widthRatio, setWidthRatio] = useState(1);
-
-  useEffect(() => {
-    const FIGMA_WIDTH = 640;
-    const updateWidthRatio = () => {
-      const newWidthRatio = window.innerWidth / FIGMA_WIDTH;
-      setWidthRatio(newWidthRatio);
-    };
-
-    // Initial call to set the width ratio
-    updateWidthRatio();
-
-    // Update the width ratio on window resize
-    window.addEventListener('resize', updateWidthRatio);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', updateWidthRatio);
-    };
-  }, []);
 
   const handleEmotionClick = id => {
     setSelectedEmotion(id);
@@ -32,17 +53,15 @@ function SelectEmotionPage() {
 
   return (
     <>
-      <h1>감정 선택 페이지</h1>
+      <A11yHidden>감정 선택 페이지</A11yHidden>
       <TopNavBar progress={1} />
 
       <div>
-        <div>
-          <h2>당신의 하루는 어떤</h2>
-          <h2>감정이였나요?</h2>
-          <p>가장 많이 느낀 감정을 찾아보세요</p>
-        </div>
+        <H2>당신의 하루는 어떤</H2>
+        <H2>감정이였나요?</H2>
+        <P>가장 많이 느낀 감정을 찾아보세요</P>
 
-        <ul>
+        <EmotionContainer>
           <Emotion src='/emotion.png' label='행복' onClick={() => handleEmotionClick(1)} />
           <Emotion src='/emotion.png' label='기쁨' onClick={() => handleEmotionClick(2)} />
           <Emotion src='/emotion.png' label='감사' onClick={() => handleEmotionClick(3)} />
@@ -55,7 +74,7 @@ function SelectEmotionPage() {
           <Emotion src='/emotion.png' label='걱정' onClick={() => handleEmotionClick(10)} />
           <Emotion src='/emotion.png' label='후회' onClick={() => handleEmotionClick(11)} />
           <Emotion src='/emotion.png' label='피곤' onClick={() => handleEmotionClick(12)} />
-        </ul>
+        </EmotionContainer>
 
         <ButtonContainer
           firstLabel='건너뛰기'
