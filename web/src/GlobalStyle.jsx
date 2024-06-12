@@ -3,19 +3,24 @@ import {createGlobalStyle} from 'styled-components';
 const GlobalStyle = createGlobalStyle`
 
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'Pretendard Variable';
+	font-weight: 45 920;
+	font-style: normal;
+	font-display: swap;
+	src: url('./woff2/PretendardVariable.woff2') format('woff2-variations');
 }
+
+  
     html, body, * {
+        font-family: 'Pretendard Variable', sans-serif;
         margin: 0; /* 모든 요소의 기본 마진을 0으로 설정 */
         padding: 0; /* 모든 요소의 기본 패딩을 0으로 설정 */
-        font-family: 'Pretendard-Regular', sans-serif;
     }
+
 
     body {
         line-height: 200%;
+       
     }
 
     div,
