@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useReducer} from 'react';
+import React, {useReducer, useState} from 'react';
 import styled from 'styled-components';
-import TopNavBar from '../components/TopNavBar';
 
 const Main = styled.div`
   margin-left: ${props => 30 * props.theme.widthRatio}px;
