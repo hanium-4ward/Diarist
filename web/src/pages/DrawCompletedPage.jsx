@@ -1,5 +1,6 @@
-import React, {useReducer, useState} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import styled from 'styled-components';
+import TopNavBar from '../components/TopNavBar';
 
 const Main = styled.div`
   margin-left: ${props => 30 * props.theme.widthRatio}px;
@@ -92,15 +93,8 @@ const Svg = styled.svg`
 const P = styled.p`
   font-size: ${props => 24 * props.theme.widthRatio}px;
   margin-top: ${props => props.$mt * props.theme.widthRatio}px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({$isOpened}) => ($isOpened === true ? 'none' : '3')};
   letter-spacing: -0.36px;
   line-height: ${props => 40 * props.theme.widthRatio}px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  transition: max-height 0.5s ease;
-  cursor: pointer;
 `;
 
 const OpenButton = styled.button`
@@ -122,28 +116,31 @@ function DrawCompletedPage() {
     setPx(fontPx);
   }, []);
   return (
-    <div>
-      <h1 className='sr-only'>그림 완성 페이지 </h1>
-      <div className='flex'>
-        <h2 style={{fontSize: px}} className=' font-medium tracking-[-0.63px]'>
-          2026년 3월 28일
-        </h2>
-        <button type='button' aria-label='즐겨찾기'>
-          <img src='/star.png' alt='즐겨찾기 버튼' />
-        </button>
-      </div>
-      <div>
-        <img src='/완성이미지.png' alt='완성된 그림' />
-      </div>
-      <div>
-        <div>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='83'
-            height='83'
-            viewBox='0 0 83 83'
-            fill='none'
-          >
+    <Main>
+      <AccessibilityHidden>그림 완성 페이지 </AccessibilityHidden>
+      <Div $mt='100'>
+        <H2Container>
+          <StyledH2>2026년 3월 28일</StyledH2>
+        </H2Container>
+        <Button type='button' aria-label='즐겨찾기'>
+          {favorite ? (
+            <IconImg
+              onClick={setFavorite}
+              $width='50'
+              src='/fullStar.png'
+              alt='합쳐진 즐겨찾기 버튼'
+            />
+          ) : (
+            <IconImg onClick={setFavorite} $width='50' src='/star.png' alt='즐겨찾기 버튼' />
+          )}
+        </Button>
+      </Div>
+      <Div $mt='38'>
+        <PaintingImg src='/완성이미지.png' alt='완성된 그림' />
+      </Div>
+      <Div $mt='38' $justify='space-evenly'>
+        <Div $gap='10'>
+          <Svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 83 83' fill='none'>
             <path
               fillRule='evenodd'
               clipRule='evenodd'
@@ -168,12 +165,10 @@ function DrawCompletedPage() {
         </Figure>
       </Div>
 
-      <P $isOpened={isOpened} $mt='38'>
-        {content}
-      </P>
+      <P $mt='38'>{isOpened ? content : content.slice(0, 100)}</P>
       <Div $mt='38'>
         <OpenButton type='button' aria-label='더보기' onClick={setIsOpened}>
-          <IconImg $isOpened={isOpened} $width='30' src='/prev.png' alt='더보기 버튼' />
+          <IconImg $width='30' src='/prev.png' alt='더보기 버튼' />
         </OpenButton>
       </Div>
     </Main>

@@ -12,7 +12,7 @@ import SelectEmotionPage from './pages/SelectEmotionPage';
 import WritingDiaryPage from './pages/WritingDiaryPage';
 
 function App() {
-  const [widthRatio, setWidthRatio] = useState(1);
+  const [widthRatio, setWidthRatio] = useState(0);
   const FIGMA_WIDTH = 640;
 
   useEffect(() => {
@@ -24,10 +24,9 @@ function App() {
     updateWidthRatio();
     window.addEventListener('resize', updateWidthRatio);
 
-    // Cleanup function을 제거했습니다.
-    // return () => {
-    //   window.removeEventListener('resize', updateWidthRatio);
-    // };
+    return () => {
+      window.removeEventListener('resize', updateWidthRatio);
+    };
   }, []);
 
   const theme = {
