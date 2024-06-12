@@ -41,7 +41,8 @@ const Container = styled.div`
 
 const Textarea = styled.textarea`
   width: ${props => 500 * props.theme.widthRatio}px;
-  height: ${props => 752 * props.theme.widthRatio}px;
+  height: ${props =>
+    props.isKeyboardVisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
   border-radius: 20px;
   border: 1px solid #666;
   overflow: hidden;
@@ -53,6 +54,7 @@ const Textarea = styled.textarea`
   font-weight: 400;
   line-height: 40px;
   letter-spacing: -0.36px;
+  transition: height 0.3s ease;
 `;
 
 const InputP = styled.p`
@@ -73,7 +75,6 @@ const Span = styled.span`
 
 function WritingDiaryPage() {
   // 감정 선택 페이지에서 전달받은 데이터
-
   const theme = useTheme();
 
   const location = useLocation();
@@ -120,7 +121,7 @@ function WritingDiaryPage() {
           <P>당신의 일기는 선택한 화가의 그림으로 재탄생 됩니다.</P>
         </div>
         {/* 일기 작성 */}
-        <Textarea onChange={onInputHandler} value={text} />
+        <Textarea onChange={onInputHandler} value={text} isKeyboardVisible={isKeyboardVisible} />
         <InputP>
           {inputCount}
           <Span>/1000</Span>
