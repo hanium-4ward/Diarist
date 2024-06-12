@@ -1,5 +1,6 @@
 package com.hanium.diarist.domain.emotion.controller;
 
+import com.hanium.diarist.common.response.SuccessResponse;
 import com.hanium.diarist.domain.emotion.dto.CreateEmotionRequest;
 import com.hanium.diarist.domain.emotion.dto.CreateEmotionResponse;
 import com.hanium.diarist.domain.emotion.service.EmotionService;
@@ -22,9 +23,9 @@ public class EmotionController {
     private final EmotionService emotionService;
 
     @PostMapping("/create")
-    public ResponseEntity<List<CreateEmotionResponse>> createEmotions(@RequestBody List<CreateEmotionRequest> createEmotionRequests) {
+    public ResponseEntity<SuccessResponse<List<CreateEmotionResponse>>> createEmotions(@RequestBody List<CreateEmotionRequest> createEmotionRequests) {
         List<CreateEmotionResponse> emotions = emotionService.createEmotions(createEmotionRequests);
-        return new ResponseEntity<>(emotions, HttpStatus.CREATED);
+        return SuccessResponse.of(emotions).asHttp(HttpStatus.CREATED);
     }
 
 }
