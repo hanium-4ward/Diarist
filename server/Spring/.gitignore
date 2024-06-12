@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 .env
 /src/main/resources/application-test.yml
-
+../.vscode
 
 
 
