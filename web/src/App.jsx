@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {Routes, Route} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Route, Routes} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import Calendar from './pages/Calendar';
-import WritingDiaryPage from './pages/WritingDiaryPage';
-import DrawCompletedPage from './pages/DrawCompletedPage';
-import SelectDrawerPage from './pages/SelectDrawerPage';
-import DrawerListPage from './pages/DrawerListPage';
-import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
-import AlbumListPage from './pages/AlbumListPage';
 import GlobalStyle from './GlobalStyle';
+import AlbumListPage from './pages/AlbumListPage';
+import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
+import Calendar from './pages/Calendar';
+import DrawCompletedPage from './pages/DrawCompletedPage';
+import DrawerListPage from './pages/DrawerListPage';
+import SelectDrawerPage from './pages/SelectDrawerPage';
 import SelectEmotionPage from './pages/SelectEmotionPage';
-
-const FIGMA_WIDTH = 640;
+import WritingDiaryPage from './pages/WritingDiaryPage';
 
 function App() {
   const [widthRatio, setWidthRatio] = useState(1);
+  const FIGMA_WIDTH = 640;
 
   useEffect(() => {
     const updateWidthRatio = () => {
@@ -25,9 +24,10 @@ function App() {
     updateWidthRatio();
     window.addEventListener('resize', updateWidthRatio);
 
-    return () => {
-      window.removeEventListener('resize', updateWidthRatio);
-    };
+    // Cleanup function을 제거했습니다.
+    // return () => {
+    //   window.removeEventListener('resize', updateWidthRatio);
+    // };
   }, []);
 
   const theme = {
