@@ -55,6 +55,7 @@ const Textarea = styled.textarea`
   line-height: 40px;
   letter-spacing: -0.36px;
   transition: height 0.3s ease;
+  outline: none;
 `;
 
 const InputP = styled.p`
