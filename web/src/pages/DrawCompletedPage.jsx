@@ -31,18 +31,6 @@ const StyledH2 = styled.h2`
 `;
 
 function DrawCompletedPage() {
-<<<<<<< HEAD
-  const widthRatio = useWidthRatio();
-
-  return (
-    <div>
-      <h1>그림 완성 페이지 </h1>
-
-      <div>
-        <div>
-          <StyledH2 widthRatio={widthRatio}>2026년 3월 28일</StyledH2>
-        </div>
-=======
   const [px, setPx] = useState(0); // 초기 값 설정
   useEffect(() => {
     const devicePixelRatio = window.devicePixelRatio || 1;
@@ -50,13 +38,12 @@ function DrawCompletedPage() {
     setPx(fontPx);
   }, []);
   return (
-    <>
+    <div>
       <h1 className='sr-only'>그림 완성 페이지 </h1>
       <div className='flex'>
         <h2 style={{fontSize: px}} className=' font-medium tracking-[-0.63px]'>
           2026년 3월 28일
         </h2>
->>>>>>> f1060f8 (styling : PRJO-65 : dpi를 통한 px 적용)
         <button type='button' aria-label='즐겨찾기'>
           <img src='/star.png' alt='즐겨찾기 버튼' />
         </button>
