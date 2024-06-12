@@ -9,6 +9,7 @@ import DrawerListPage from './pages/DrawerListPage';
 import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
 import AlbumListPage from './pages/AlbumListPage';
 import GlobalStyle from './GlobalStyle';
+import SelectEmotionPage from './pages/SelectEmotionPage';
 
 const FIGMA_WIDTH = 640;
 
@@ -45,6 +46,7 @@ function App() {
         <Route path='write' element={<WritingDiaryPage />} />
         <Route path='thumbnail' element={<AlbumThumbnailPage />} />
         <Route path='list' element={<AlbumListPage />} />
+        <Route path='emotion' element={<SelectEmotionPage />} />
       </Routes>
     </ThemeProvider>
   );
