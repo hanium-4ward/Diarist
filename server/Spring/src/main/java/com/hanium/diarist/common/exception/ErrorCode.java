@@ -9,6 +9,7 @@ public enum ErrorCode {
 
     // Common
     KAFKFA_CONNECT_ERROR(500, "C001", "Kafka 연결 중 오류가 발생했습니다."),
+    JSON_PROCESS_ERROR(500, "C003", "JSON 처리 중 오류가 발생했습니다."),
 
     // User
 
@@ -16,7 +17,7 @@ public enum ErrorCode {
     // Diary
     DIARY_NOT_FOUND(404, "D001", "일기를 찾을 수 없습니다."),
     INVALID_DIARY_ID(400, "D002", "일기 ID 형식이 잘못되었습니다."),
-    JSON_PROCESS_ERROR(500, "D003", "JSON 처리 중 오류가 발생했습니다."),
+
     SSE_ERROR(500, "D004", "SSE 처리 중 오류가 발생했습니다.");
 
     // Emotion
