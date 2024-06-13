@@ -40,7 +40,7 @@ public class CreateDiaryProducerService {
             String message = objectMapper.writeValueAsString(createDiaryRequest);
             sendKafkaMessage(CreateTopicName,message);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to convert CreateDiaryRequest to JSON", e);
+            throw new JsonProcessException();
         }
     }
 
