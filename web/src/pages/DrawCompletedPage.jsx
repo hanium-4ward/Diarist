@@ -91,17 +91,16 @@ const Svg = styled.svg`
 `;
 
 const P = styled.p`
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({$isOpened}) => ($isOpened ? 'none' : '3')};
   font-size: ${props => 24 * props.theme.widthRatio}px;
   margin-top: ${props => props.$mt * props.theme.widthRatio}px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${({$isOpened}) => ($isOpened === true ? 'none' : '3')};
   letter-spacing: -0.36px;
   line-height: ${props => 40 * props.theme.widthRatio}px;
   text-overflow: ellipsis;
-  /* white-space: ${({$isOpened}) => ($isOpened === true ? '' : 'nowrap')}; */
   overflow: hidden;
-  /* transition: max-height 0.5s ease; */
+  transition: max-height 0.5s ease;
   cursor: pointer;
 `;
 
@@ -117,64 +116,19 @@ const OpenButton = styled.button`
 `;
 
 function DrawCompletedPage() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  const widthRatio = useWidthRatio();
-=======
   const [favorite, setFavorite] = useReducer(state => !state, false);
   const [isOpened, setIsOpened] = useReducer(state => !state, false);
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 8be510b (styling ; PROJ-65 : 버튼 클릭시 상태에 따라 즐겨찾기 아이콘 변경)
+  const [data, setData] = useState([]);
+  const handleFavorite = () => {
+    console.log(favorite);
+  };
 
-=======
-  console.log(isOpened);
->>>>>>> 7617416 (feat : PROJ-65 : 버튼 클릭 시 상태에 따라 일기 더보기 기능 추가)
-=======
->>>>>>> d131f0d (styling : PROJ-65 : ellipsis 추가)
+  const handleRedraw = () => {
+    console.log(data);
+  };
   const content =
     '(엑스포츠뉴스 김환 기자) 에릭 텐 하흐 감독의 유임을 반기지 않을 다섯 명의 선수들이 있다.글로벌 스포츠 매체이자 영국 내 유력 매체인 디 애슬레틱의 데이비드 온스테인은 12일(한국시간) "텐 하흐 감독은 맨체스터 유나이티드의 감독으로 남을 것이다. 구단은 시즌이 끝난 뒤 검토를 거친 끝에 텐 하흐 감독을 유임하기로 결정했고, 텐 하흐 감독도 올드 트래퍼드에 남기로 동의했다"라고 전했다.또한 온스테인은 "맨유는 텐 하흐 감독의 미래에 대한 불확실성이 커지자 회담을 열었고, 양측 모두 텐 하흐 감독의 유임을 원했다. 텐 하흐 감독의 기존 계약은 내년 6월까지지만 12개월 연장 옵션이 포함되어 있고, 양측은 이제 계약 연장을 두고 논의에 들어갈 예정이다"라고 덧붙였다.영국 공영방송 BBC 역시 같은 날 "텐 하흐 감독이 시즌이 끝난 후 ';
   return (
-<<<<<<< HEAD
-    <div>
-      <h1>그림 완성 페이지 </h1>
-
-      <div>
-        <div>
-          <StyledH2 widthRatio={widthRatio}>2026년 3월 28일</StyledH2>
-        </div>
-=======
-  const [px, setPx] = useState(0); // 초기 값 설정
-  useEffect(() => {
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    const fontPx = 20 * devicePixelRatio;
-    setPx(fontPx);
-  }, []);
-  return (
-    <>
-      <h1 className='sr-only'>그림 완성 페이지 </h1>
-      <div className='flex'>
-        <h2 style={{fontSize: px}} className=' font-medium tracking-[-0.63px]'>
-          2026년 3월 28일
-        </h2>
->>>>>>> f1060f8 (styling : PRJO-65 : dpi를 통한 px 적용)
-        <button type='button' aria-label='즐겨찾기'>
-          <img src='/star.png' alt='즐겨찾기 버튼' />
-        </button>
-      </div>
-      <div>
-        <img src='/완성이미지.png' alt='완성된 그림' />
-      </div>
-      <div>
-        <div>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='83'
-            height='83'
-            viewBox='0 0 83 83'
-            fill='none'
-          >
-=======
     <Main>
       <AccessibilityHidden>그림 완성 페이지 </AccessibilityHidden>
       <Div $mt='100'>
@@ -200,7 +154,6 @@ function DrawCompletedPage() {
       <Div $mt='38' $justify='space-evenly'>
         <Div $gap='10'>
           <Svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 83 83' fill='none'>
->>>>>>> 8be510b (styling ; PROJ-65 : 버튼 클릭시 상태에 따라 즐겨찾기 아이콘 변경)
             <path
               fillRule='evenodd'
               clipRule='evenodd'
