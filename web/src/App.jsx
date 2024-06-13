@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Route, Routes} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Routes, Route} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import GlobalStyle from './GlobalStyle';
-import AlbumListPage from './pages/AlbumListPage';
-import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
 import Calendar from './pages/Calendar';
-import DrawCompletedPage from './pages/DrawCompletedPage';
-import DrawerListPage from './pages/DrawerListPage';
-import SelectDrawerPage from './pages/SelectDrawerPage';
-import SelectEmotionPage from './pages/SelectEmotionPage';
 import WritingDiaryPage from './pages/WritingDiaryPage';
+import DrawCompletedPage from './pages/DrawCompletedPage';
+import SelectDrawerPage from './pages/SelectDrawerPage';
+import DrawerListPage from './pages/DrawerListPage';
+import AlbumThumbnailPage from './pages/AlbumThumbnailPage';
+import AlbumListPage from './pages/AlbumListPage';
+import SelectEmotionPage from './pages/SelectEmotionPage';
+import GlobalStyle from './GlobalStyle';
 
 function App() {
   const [widthRatio, setWidthRatio] = useState(0);
@@ -50,5 +50,4 @@ function App() {
     </ThemeProvider>
   );
 }
-
 export default App;
