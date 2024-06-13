@@ -1,5 +1,34 @@
 import React from 'react';
+import styled, {useTheme} from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+
+const FirstButton = styled.button`
+  width: ${props => 280 * props.theme.widthRatio}px;
+  height: ${props => 80 * props.theme.widthRatio}px;
+  border-radius: 15px;
+  border: 1px solid #000;
+  background: #fff;
+  margin-left: ${props => 30 * props.theme.widthRatio}px;
+  font-size: ${props => 24 * props.theme.widthRatio}px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const SecondButton = styled.button`
+  width: ${props => 280 * props.theme.widthRatio}px;
+  height: ${props => 80 * props.theme.widthRatio}px;
+  border-radius: 15px;
+  border: 1px solid #000;
+  background: #000;
+  color: #fff;
+  font-size: ${props => 24 * props.theme.widthRatio}px;
+  margin-left: ${props => 20 * props.theme.widthRatio}px;
+  margin-right: ${props => 30 * props.theme.widthRatio}px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
 
 function ButtonContainer({
   firstLabel,
@@ -24,7 +53,7 @@ function ButtonContainer({
 
   return (
     <div>
-      <button
+      <FirstButton
         type='button'
         onClick={() =>
           navigate(`/${nextPath}`, {
@@ -39,8 +68,8 @@ function ButtonContainer({
         }
       >
         {firstLabel}
-      </button>
-      <button
+      </FirstButton>
+      <SecondButton
         type='button'
         onClick={() =>
           navigate(`/${nextPath}`, {
@@ -55,7 +84,7 @@ function ButtonContainer({
         }
       >
         {secondLabel}
-      </button>
+      </SecondButton>
     </div>
   );
 }
