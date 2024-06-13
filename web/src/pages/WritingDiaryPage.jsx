@@ -25,7 +25,6 @@ const H2 = styled.h2`
 `;
 
 const P = styled.p`
-  color: #000;
   text-align: center;
   font-size: ${props => 24 * props.theme.widthRatio}px;
   font-weight: 300;
@@ -42,7 +41,7 @@ const Container = styled.div`
 const Textarea = styled.textarea`
   width: ${props => 500 * props.theme.widthRatio}px;
   height: ${props =>
-    props.isKeyboardVisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
+    props.iskeyboardvisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
   border-radius: 20px;
   border: 1px solid #666;
   overflow: hidden;
@@ -122,7 +121,11 @@ function WritingDiaryPage() {
           <P>당신의 일기는 선택한 화가의 그림으로 재탄생 됩니다.</P>
         </div>
         {/* 일기 작성 */}
-        <Textarea onChange={onInputHandler} value={text} isKeyboardVisible={isKeyboardVisible} />
+        <Textarea
+          onChange={onInputHandler}
+          value={text}
+          iskeyboardvisible={isKeyboardVisible ? 'true' : undefined}
+        />
         <InputP>
           {inputCount}
           <Span>/1000</Span>
