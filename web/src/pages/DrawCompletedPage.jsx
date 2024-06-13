@@ -1,62 +1,159 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import styled from 'styled-components';
+import TopNavBar from '../components/TopNavBar';
 
-const FIGMA_WIDTH = 640;
+const Main = styled.div`
+  margin-left: ${props => 30 * props.theme.widthRatio}px;
+  margin-right: ${props => 30 * props.theme.widthRatio}px;
+`;
 
-const useWidthRatio = () => {
-  const [widthRatio, setWidthRatio] = useState(1);
+const AccessibilityHidden = styled.h1`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+`;
 
-  useEffect(() => {
-    const updateWidthRatio = () => {
-      const devicePixelRatio = window.devicePixelRatio || 1;
-      const screenWidth = window.screen.width;
-      const logicalWidth = screenWidth / devicePixelRatio;
-      const newWidthRatio = logicalWidth / FIGMA_WIDTH;
-      setWidthRatio(newWidthRatio);
-    };
+const Div = styled.div`
+  margin-top: ${props => props.$mt * props.theme.widthRatio}px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: ${props => (props.$justify ? props.$justify : 'center')};
+  gap: ${props => props.$gap * props.theme.widthRatio}px;
+`;
 
-    updateWidthRatio();
-    window.addEventListener('resize', updateWidthRatio);
-
-    return () => {
-      window.removeEventListener('resize', updateWidthRatio);
-    };
-  }, []);
-
-  return widthRatio;
-};
+const H2Container = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+`;
 
 const StyledH2 = styled.h2`
-  font-size: ${props => props.widthRatio * 24}px;
+  font-size: ${props => 42 * props.theme.widthRatio}px;
+  letter-spacing: -0.63px;
+  font-weight: 500;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  right: 0;
+  border: none;
+  background-color: transparent;
+`;
+
+const IconImg = styled.img`
+  width: ${props => props.$width * props.theme.widthRatio}px;
+  border-radius: ${props => (props.$radius ? props.$radius : '')};
+  transform: rotate(${({$isOpened}) => ($isOpened === true ? '180deg' : '0deg')});
+  transition: transform 0.5s ease;
+`;
+
+const PaintingImg = styled.img`
+  width: ${props => 515 * props.theme.widthRatio}px;
+  border-radius: 5%;
+  flex-shrink: 0;
+`;
+
+const Span = styled.span`
+  color: #666;
+  text-align: center;
+  font-size: ${props => 26 * props.theme.widthRatio}px;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: ${props => -0.39 * props.theme.widthRatio}px;
+`;
+
+const Figure = styled.figure`
+  gap: ${props => props.$gap * props.theme.widthRatio}px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+  justify-content: ${props => (props.$justify ? props.$justify : 'center')};
+`;
+
+const Figcaption = styled.figcaption`
+  color: #666;
+  text-align: center;
+  font-size: ${props => 26 * props.theme.widthRatio}px;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: ${props => -0.39 * props.theme.widthRatio}px;
+`;
+
+const Svg = styled.svg`
+  width: ${props => 83 * props.theme.widthRatio}px;
+`;
+
+const P = styled.p`
+  font-size: ${props => 24 * props.theme.widthRatio}px;
+  margin-top: ${props => props.$mt * props.theme.widthRatio}px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: ${({$isOpened}) => ($isOpened === true ? 'none' : '3')};
+  letter-spacing: -0.36px;
+  line-height: ${props => 40 * props.theme.widthRatio}px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+  cursor: pointer;
+`;
+
+const OpenButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: ${props => 10 * props.theme.widthRatio}px;
+  border: ${props => 1 * props.theme.widthRatio}px solid rgba(0, 0, 0, 0.5);
+  width: ${props => 192 * props.theme.widthRatio}px;
+  height: ${props => 40 * props.theme.widthRatio}px;
 `;
 
 function DrawCompletedPage() {
-  const widthRatio = useWidthRatio();
+  const [favorite, setFavorite] = useReducer(state => !state, false);
+  const [isOpened, setIsOpened] = useReducer(state => !state, false);
+  const [data, setData] = useState([]);
+  const handleFavorite = () => {
+    console.log(favorite);
+  };
 
+  const handleRedraw = () => {
+    console.log(data);
+  };
+  const content =
+    '(엑스포츠뉴스 김환 기자) 에릭 텐 하흐 감독의 유임을 반기지 않을 다섯 명의 선수들이 있다.글로벌 스포츠 매체이자 영국 내 유력 매체인 디 애슬레틱의 데이비드 온스테인은 12일(한국시간) "텐 하흐 감독은 맨체스터 유나이티드의 감독으로 남을 것이다. 구단은 시즌이 끝난 뒤 검토를 거친 끝에 텐 하흐 감독을 유임하기로 결정했고, 텐 하흐 감독도 올드 트래퍼드에 남기로 동의했다"라고 전했다.또한 온스테인은 "맨유는 텐 하흐 감독의 미래에 대한 불확실성이 커지자 회담을 열었고, 양측 모두 텐 하흐 감독의 유임을 원했다. 텐 하흐 감독의 기존 계약은 내년 6월까지지만 12개월 연장 옵션이 포함되어 있고, 양측은 이제 계약 연장을 두고 논의에 들어갈 예정이다"라고 덧붙였다.영국 공영방송 BBC 역시 같은 날 "텐 하흐 감독이 시즌이 끝난 후 ';
   return (
-    <div>
-      <h1>그림 완성 페이지 </h1>
-
-      <div>
-        <div>
-          <StyledH2 widthRatio={widthRatio}>2026년 3월 28일</StyledH2>
-        </div>
-        <button type='button' aria-label='즐겨찾기'>
-          <img src='/star.png' alt='즐겨찾기 버튼' />
-        </button>
-      </div>
-      <div>
-        <img src='/완성이미지.png' alt='완성된 그림' />
-      </div>
-      <div>
-        <div>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='83'
-            height='83'
-            viewBox='0 0 83 83'
-            fill='none'
-          >
+    <Main>
+      <AccessibilityHidden>그림 완성 페이지 </AccessibilityHidden>
+      <Div $mt='100'>
+        <H2Container>
+          <StyledH2>2026년 3월 28일</StyledH2>
+        </H2Container>
+        <Button type='button' aria-label='즐겨찾기'>
+          {favorite ? (
+            <IconImg
+              onClick={setFavorite}
+              $width='50'
+              src='/fullStar.png'
+              alt='합쳐진 즐겨찾기 버튼'
+            />
+          ) : (
+            <IconImg onClick={setFavorite} $width='50' src='/star.png' alt='즐겨찾기 버튼' />
+          )}
+        </Button>
+      </Div>
+      <Div $mt='38'>
+        <PaintingImg src='/완성이미지.png' alt='완성된 그림' />
+      </Div>
+      <Div $mt='38' $justify='space-evenly'>
+        <Div $gap='10'>
+          <Svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 83 83' fill='none'>
             <path
               fillRule='evenodd'
               clipRule='evenodd'
@@ -71,31 +168,25 @@ function DrawCompletedPage() {
             />
             <circle cx='32.5' cy='33.5' r='3.5' fill='black' />
             <circle cx='49.5' cy='33.5' r='3.5' fill='black' />
-          </svg>
-          <span>#놀라움</span>
-        </div>
-        <figure>
+          </Svg>
+          <Span># 놀라움</Span>
+        </Div>
+        <Figure $gap='10'>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
-          <img src='/피카소.png' />
-          <figcaption>#피카소</figcaption>
-        </figure>
-      </div>
-      <p>
-        1998년 영국 연구소에서 처음 제창된 &quot;음주 파트너십(drinking partnership)&quot;은 유사한
-        음주습관이 부부 관계에 긍정적 영향을 줄 가능성이 있다는 개념이다...
-      </p>
-      <div>
-        {' '}
-        <button type='button' aria-label='더보기'>
-          <img src='/prev.png' alt='더보기 버튼' />
-        </button>
-      </div>
+          <IconImg $width='83' $radius='100%' src='/피카소.png' />
+          <Figcaption># 피카소</Figcaption>
+        </Figure>
+      </Div>
 
-      <div>
-        <button type='button'>다시그리기</button>
-        <button type='button'>저장</button>
-      </div>
-    </div>
+      <P $isOpened={isOpened} $mt='38'>
+        {content}
+      </P>
+      <Div $mt='38'>
+        <OpenButton type='button' aria-label='더보기' onClick={setIsOpened}>
+          <IconImg $isOpened={isOpened} $width='30' src='/prev.png' alt='더보기 버튼' />
+        </OpenButton>
+      </Div>
+    </Main>
   );
 }
 
