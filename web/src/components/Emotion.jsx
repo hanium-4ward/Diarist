@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, {useTheme} from 'styled-components';
+import styled from 'styled-components';
 
 const Image = styled.img`
   width: ${props => 110 * props.theme.widthRatio}px;
@@ -15,13 +15,26 @@ const Figcaption = styled.figcaption`
   line-height: normal;
 `;
 
+const Button = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 function Emotion({src, label, onClick}) {
   return (
-    <li onClick={onClick}>
-      <figure>
-        <Image src={src} alt={label} />
-        <Figcaption>{label}</Figcaption>
-      </figure>
+    <li>
+      <Button onClick={onClick}>
+        <figure>
+          <Image src={src} alt={label} />
+          <Figcaption>{label}</Figcaption>
+        </figure>
+      </Button>
     </li>
   );
 }
