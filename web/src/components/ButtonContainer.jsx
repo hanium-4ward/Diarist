@@ -1,6 +1,10 @@
 import React from 'react';
-import styled, {useTheme} from 'styled-components';
 import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  margin-bottom: ${props => 40 * props.theme.widthRatio}px;
+`;
 
 const FirstButton = styled.button`
   width: ${props => 280 * props.theme.widthRatio}px;
@@ -52,7 +56,7 @@ function ButtonContainer({
   const navigate = useNavigate();
 
   return (
-    <div>
+    <Container>
       <FirstButton
         type='button'
         onClick={() =>
@@ -85,7 +89,7 @@ function ButtonContainer({
       >
         {secondLabel}
       </SecondButton>
-    </div>
+    </Container>
   );
 }
 
