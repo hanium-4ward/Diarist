@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import TopNavBar from '../components/TopNavBar';
 import CategoryButton from '../components/CategoryButton';
+import CheckModal from '../components/CheckModal';
 
 const Div = styled.div`
   display: flex;
@@ -17,15 +18,12 @@ const DrawerWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
-  align-items: flex-start; /* 아이템을 위쪽으로 정렬 */
-  height: calc(
-    100vh - ${props => 270 * props.theme.widthRatio}px
-  ); /* 화면 높이에서 다른 요소의 높이를 뺀 값 */
+  height: calc(100vh - ${props => 270 * props.theme.widthRatio}px);
   box-sizing: border-box;
 `;
 
 const Figure = styled.figure`
-  width: calc(50% - 20px);
+  width: 50%;
   height: calc((100% - 40px) / 3);
   display: flex;
   flex-direction: column;
@@ -42,15 +40,21 @@ const Figcaption = styled.figcaption`
 `;
 
 const DrawerImg = styled.img`
-  width: 95%;
+  width: 90%;
   height: auto;
 `;
 
 function SelectDrawerPage() {
   const [selectCategory, setSelectCategory] = useState('르네상스');
   const location = useLocation();
-  const info = location.state;
   const categoryArr = ['르네상스', '근대', '현대', '기타'];
+  const [openModal, setOpenModal] = useState(false);
+  const handleModal = () => {
+    setOpenModal(true);
+  };
+  const closeModal = () => {
+    setOpenModal(false);
+  };
   const categoryMap = {
     르네상스: 'Renaissance',
     근대: 'Contemporary',
@@ -115,12 +119,13 @@ function SelectDrawerPage() {
           {data.map(item => (
             <Figure>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
-              <DrawerImg src={item.artistPicture} />
+              <DrawerImg src={item.artistPicture} onClick={handleModal} />
               <Figcaption>{item.artistName}</Figcaption>
             </Figure>
           ))}
         </DrawerWrapper>
       </div>
+      {openModal && <CheckModal openModal={openModal} closeModal={closeModal} />}
     </>
   );
 }
