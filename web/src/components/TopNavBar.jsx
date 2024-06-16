@@ -50,6 +50,10 @@ const H2 = styled.h2`
   font-weight: 500;
   line-height: normal;
   letter-spacing: ${props => -0.63 * props.theme.widthRatio}px;
+  margin-left: ${props => 30 * props.theme.widthRatio}px;
+  margin-right: ${props => 30 * props.theme.widthRatio}px;
+  margin-top: ${props => 20 * props.theme.widthRatio}px;
+  word-break: keep-all;
 `;
 function TopNavBar({page, progress, title}) {
   // page 페이지 이름
