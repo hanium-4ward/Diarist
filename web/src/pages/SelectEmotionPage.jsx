@@ -27,9 +27,8 @@ const H2 = styled.h2`
 const EmotionContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: ${props => 40 * props.theme.widthRatio}px;
+  gap: ${props => 60 * props.theme.widthRatio}px;
   justify-content: space-between;
-  margin-top: ${props => 40 * props.theme.widthRatio}px;
   margin-left: ${props => 80 * props.theme.widthRatio}px;
   margin-right: ${props => 80 * props.theme.widthRatio}px;
 `;
@@ -59,18 +58,18 @@ function SelectEmotionPage() {
       </div>
 
       <EmotionContainer>
-        <Emotion src='/emotion.png' label='행복' onClick={() => handleEmotionClick(1)} />
-        <Emotion src='/emotion.png' label='기쁨' onClick={() => handleEmotionClick(2)} />
-        <Emotion src='/emotion.png' label='감사' onClick={() => handleEmotionClick(3)} />
-        <Emotion src='/emotion.png' label='기대' onClick={() => handleEmotionClick(4)} />
-        <Emotion src='/emotion.png' label='신남' onClick={() => handleEmotionClick(5)} />
-        <Emotion src='/emotion.png' label='설렘' onClick={() => handleEmotionClick(6)} />
-        <Emotion src='/emotion.png' label='슬픔' onClick={() => handleEmotionClick(7)} />
-        <Emotion src='/emotion.png' label='화남' onClick={() => handleEmotionClick(8)} />
-        <Emotion src='/emotion.png' label='짜증' onClick={() => handleEmotionClick(9)} />
-        <Emotion src='/emotion.png' label='걱정' onClick={() => handleEmotionClick(10)} />
-        <Emotion src='/emotion.png' label='후회' onClick={() => handleEmotionClick(11)} />
-        <Emotion src='/emotion.png' label='피곤' onClick={() => handleEmotionClick(12)} />
+        <Emotion src='/happy.png' label='행복' onClick={() => handleEmotionClick(1)} />
+        <Emotion src='/fun.png' label='기쁨' onClick={() => handleEmotionClick(2)} />
+        <Emotion src='/thank.png' label='감사' onClick={() => handleEmotionClick(3)} />
+        <Emotion src='/expect.png' label='기대' onClick={() => handleEmotionClick(4)} />
+        <Emotion src='/excite.png' label='신남' onClick={() => handleEmotionClick(5)} />
+        <Emotion src='/flutter.png' label='설렘' onClick={() => handleEmotionClick(6)} />
+        <Emotion src='/sad.png' label='슬픔' onClick={() => handleEmotionClick(7)} />
+        <Emotion src='/angry.png' label='화남' onClick={() => handleEmotionClick(8)} />
+        <Emotion src='/annoy.png' label='짜증' onClick={() => handleEmotionClick(9)} />
+        <Emotion src='/worry.png' label='걱정' onClick={() => handleEmotionClick(10)} />
+        <Emotion src='/regret.png' label='후회' onClick={() => handleEmotionClick(11)} />
+        <Emotion src='/tired.png' label='피곤' onClick={() => handleEmotionClick(12)} />
       </EmotionContainer>
 
       <ButtonContainer
