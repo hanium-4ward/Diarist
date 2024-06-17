@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Image = styled.img`
-  width: ${props => 110 * props.theme.widthRatio}px;
-  height: ${props => 110 * props.theme.widthRatio}px;
-  flex-shrink: 0;
+  width: ${props => 120 * props.theme.widthRatio}px;
+  height: ${props => 120 * props.theme.widthRatio}px;
 `;
 
 const Figcaption = styled.figcaption`
