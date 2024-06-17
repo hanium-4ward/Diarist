@@ -24,15 +24,6 @@ const H2 = styled.h2`
   letter-spacing: -0.63px;
 `;
 
-const P = styled.p`
-  text-align: center;
-  font-size: ${props => 24 * props.theme.widthRatio}px;
-  font-weight: 300;
-  line-height: normal;
-  letter-spacing: -0.36px;
-  margin-top: ${props => 20 * props.theme.widthRatio}px;
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
