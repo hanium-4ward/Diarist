@@ -65,27 +65,27 @@ function SelectDrawerPage() {
   };
   const data = [
     {
-      artistName: '존 윌리엄 워터하우스',
+      artistName: '존 윌리엄',
       artistPicture: '/drawer.jpg',
       description: '화가 설명 ~~~~~~입니다',
     },
     {
-      artistName: '존 윌리엄 워터하우스',
+      artistName: '존 윌리엄 워',
       artistPicture: '/drawer.jpg',
       description: '화가 설명 ~~~~~~입니다',
     },
     {
-      artistName: '존 윌리엄 워터하우스',
+      artistName: '존 윌리엄 워터',
       artistPicture: '/drawer.jpg',
       description: '화가 설명 ~~~~~~입니다',
     },
     {
-      artistName: '존 윌리엄 워터하우스',
+      artistName: '존 윌리엄 워터하',
       artistPicture: '/drawer.jpg',
       description: '화가 설명 ~~~~~~입니다',
     },
     {
-      artistName: '존 윌리엄 워터하우스',
+      artistName: '존 윌리엄 워터하우',
       artistPicture: '/drawer.jpg',
       description: '화가 설명 ~~~~~~입니다',
     },
@@ -101,6 +101,7 @@ function SelectDrawerPage() {
     // 통신 코드 작성
     console.log('Selected Category:', englishCategory);
   };
+  console.log(data);
 
   return (
     <>
@@ -109,6 +110,7 @@ function SelectDrawerPage() {
         <Div className='flex justify-between'>
           {categoryArr.map(category => (
             <CategoryButton
+              key={category}
               isActive={selectCategory === category}
               label={category}
               onClick={e => {
@@ -119,7 +121,7 @@ function SelectDrawerPage() {
         </Div>
         <DrawerWrapper>
           {data.map(item => (
-            <Figure>
+            <Figure key={item.artistName}>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <DrawerImg src={item.artistPicture} onClick={() => handleModal(item)} />
               <Figcaption>{item.artistName}</Figcaption>
