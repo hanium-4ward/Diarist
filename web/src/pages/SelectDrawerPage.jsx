@@ -46,10 +46,12 @@ const DrawerImg = styled.img`
 
 function SelectDrawerPage() {
   const [selectCategory, setSelectCategory] = useState('르네상스');
+  const [selectDrawer, setSelectDrawer] = useState('');
   const location = useLocation();
   const categoryArr = ['르네상스', '근대', '현대', '기타'];
   const [openModal, setOpenModal] = useState(false);
-  const handleModal = () => {
+  const handleModal = item => {
+    setSelectDrawer(item);
     setOpenModal(true);
   };
   const closeModal = () => {
@@ -119,13 +121,15 @@ function SelectDrawerPage() {
           {data.map(item => (
             <Figure>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
-              <DrawerImg src={item.artistPicture} onClick={handleModal} />
+              <DrawerImg src={item.artistPicture} onClick={() => handleModal(item)} />
               <Figcaption>{item.artistName}</Figcaption>
             </Figure>
           ))}
         </DrawerWrapper>
       </div>
-      {openModal && <CheckModal openModal={openModal} closeModal={closeModal} />}
+      {openModal && (
+        <CheckModal data={selectDrawer} openModal={openModal} closeModal={closeModal} />
+      )}
     </>
   );
 }
