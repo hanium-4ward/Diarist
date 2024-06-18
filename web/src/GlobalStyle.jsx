@@ -1,16 +1,8 @@
 import {createGlobalStyle} from 'styled-components';
+import './font.css';
 
 const GlobalStyle = createGlobalStyle`
 
-@font-face {
-	font-family: 'Pretendard Variable';
-	font-weight: 45 920;
-	font-style: normal;
-	font-display: swap;
-	src: url('./woff2/PretendardVariable.woff2') format('woff2-variations');
-}
-
-  
     html, body, * {
         font-family: 'Pretendard Variable', sans-serif;
         margin: 0; /* 모든 요소의 기본 마진을 0으로 설정 */
