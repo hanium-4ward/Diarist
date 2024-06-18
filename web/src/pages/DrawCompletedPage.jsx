@@ -1,7 +1,5 @@
-import React, {useState, useReducer} from 'react';
+import React, {useReducer, useState} from 'react';
 import styled from 'styled-components';
-import TopNavBar from '../components/TopNavBar';
-import ButtonContainer from '../components/ButtonContainer';
 import CompleteButton from '../components/CompleteButton';
 import ResetModal from '../components/ResetModal';
 
@@ -135,7 +133,7 @@ function DrawCompletedPage() {
 
   const content =
     '(엑스포츠뉴스 김환 기자) 에릭 텐 하흐 감독의 유임을 반기지 않을 다섯 명의 선수들이 있다.글로벌 스포츠 매체이자 영국 내 유력 매체인 디 애슬레틱의 데이비드 온스테인은 12일(한국시간) "텐 하흐 감독은 맨체스터 유나이티드의 감독으로 남을 것이다. 구단은 시즌이 끝난 뒤 검토를 거친 끝에 텐 하흐 감독을 유임하기로 결정했고, 텐 하흐 감독도 올드 트래퍼드에 남기로 동의했다"라고 전했다.또한 온스테인은 "맨유는 텐 하흐 감독의 미래에 대한 불확실성이 커지자 회담을 열었고, 양측 모두 텐 하흐 감독의 유임을 원했다. 텐 하흐 감독의 기존 계약은 내년 6월까지지만 12개월 연장 옵션이 포함되어 있고, 양측은 이제 계약 연장을 두고 논의에 들어갈 예정이다"라고 덧붙였다.영국 공영방송 BBC 역시 같은 날 "텐 하흐 감독이 시즌이 끝난 후 ';
-  console.log(isOpenedModal);
+
   return (
     <Main>
       <AccessibilityHidden>그림 완성 페이지 </AccessibilityHidden>
