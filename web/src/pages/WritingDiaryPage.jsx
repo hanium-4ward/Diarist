@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
 import styled from 'styled-components';
-import ButtonContainer from '../components/ButtonContainer';
+import DiaryButton from '../components/DiaryButton';
 import TopNavBar from '../components/TopNavBar';
 
 const A11yHidden = styled.h1`
@@ -88,6 +88,11 @@ function WritingDiaryPage() {
     setText(inputValue);
   };
 
+  const resetInput = () => {
+    setText('');
+    setInputCount(0);
+  };
+
   useEffect(() => {
     const handleResize = () => {
       // window.innerHeight가 줄어들면 키보드가 올라온 것으로 간주
@@ -126,12 +131,15 @@ function WritingDiaryPage() {
         </InputP>
       </TextareaContainer>
       {/* 버튼 컨테이너 */}
-      <ButtonContainer
+      <DiaryButton
         firstLabel='초기화'
         secondLabel='작성완료'
         nextPath='selectdrawer'
         emotionId={info.emotionId}
         content={text}
+        firstDisabled={text.length === 0}
+        secondDisabled={text.length === 0}
+        deleteText={resetInput}
       />
     </Container>
   );
