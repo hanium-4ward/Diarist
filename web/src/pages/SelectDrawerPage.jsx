@@ -40,7 +40,7 @@ const Figcaption = styled.figcaption`
 `;
 
 const DrawerImg = styled.img`
-  width: 90%;
+  width: 80%;
   height: auto;
 `;
 

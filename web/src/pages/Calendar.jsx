@@ -16,6 +16,7 @@ function Calendar() {
       <Link to='/thumbnail'>썸네일 보기 페이지 이동</Link>
       <Link to='/list'>리스트 보기 페이지 이동</Link>
       <Link to='emotion'>감정 선택 페이지 이동</Link>
+      <Link to='/drawerlist'>asdad</Link>
     </div>
   );
 }
