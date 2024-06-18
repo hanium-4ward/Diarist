@@ -45,6 +45,8 @@ const CloseImg = styled.img`
   padding-bottom: ${props => 33.5 * props.theme.widthRatio}px;
 `;
 const H2 = styled.h2`
+  display: flex;
+  flex-direction: column;
   text-align: center;
   font-size: ${props => 42 * props.theme.widthRatio}px;
   font-style: normal;
@@ -56,10 +58,13 @@ const H2 = styled.h2`
   margin-top: ${props => 20 * props.theme.widthRatio}px;
   word-break: keep-all;
 `;
-function TopNavBar({page, progress, title}) {
+const TitleSpan = styled.span``;
+
+function TopNavBar({page, progress, title1, title2}) {
   // page 페이지 이름
   // progress 단계
-  // title 문구
+  // title1 첫번쨰출
+  // title2 두번쨰 줄
 
   const navigate = useNavigate();
 
@@ -80,7 +85,10 @@ function TopNavBar({page, progress, title}) {
         <Span>{progress} / 3</Span>
         <CloseImg src='/btn_x.png' alt='닫기' onClick={handleClose} />
       </Header>
-      <H2>{title}</H2>
+      <H2>
+        <TitleSpan>{title1}</TitleSpan>
+        <TitleSpan>{title2}</TitleSpan>
+      </H2>
     </>
   );
 }

@@ -3,7 +3,7 @@ import {useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import TopNavBar from '../components/TopNavBar';
 import CategoryButton from '../components/CategoryButton';
-import CheckModal from '../components/CheckModal';
+import BottomSheet from '../components/bottomsheet/BottomSheet';
 
 const Div = styled.div`
   display: flex;
@@ -15,16 +15,16 @@ const Div = styled.div`
 
 const DrawerWrapper = styled.div`
   display: flex;
+  height: calc(100vh - ${props => 350 * props.theme.widthRatio}px);
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
-  height: calc(100vh - ${props => 400 * props.theme.widthRatio}px);
   box-sizing: border-box;
+  column-gap: ${props => 30 * props.theme.widthRatio}px;
 `;
 
 const Figure = styled.figure`
-  width: 50%;
-  height: calc((100% - 40px) / 3);
+  width: 45%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,15 +36,17 @@ const Figcaption = styled.figcaption`
   font-size: ${props => 26 * props.theme.widthRatio}px;
   font-weight: 400;
   line-height: normal;
-  margin-top: ${props => 15 * props.theme.widthRatio}px;
+  margin-top: ${props => 5 * props.theme.widthRatio}px;
 `;
 
 const DrawerImg = styled.img`
-  width: 80%;
+  width: ${props => 250 * props.theme.widthRatio}px;
   height: auto;
 `;
 
 function SelectDrawerPage() {
+  const newWidthRatio = window.innerWidth;
+  console.log(newWidthRatio);
   const [selectCategory, setSelectCategory] = useState('르네상스');
   const [selectDrawer, setSelectDrawer] = useState('');
   const location = useLocation();
@@ -105,7 +107,12 @@ function SelectDrawerPage() {
 
   return (
     <>
-      <TopNavBar page='화가선택 페이지' progress='3' title='함께 작업할 작가를 선택해주세요' />
+      <TopNavBar
+        page='화가선택 페이지'
+        progress='3'
+        title1='당산과 함께 작업할 '
+        title2='화가를 선택해주세요'
+      />
       <div>
         <Div className='flex justify-between'>
           {categoryArr.map(category => (
@@ -130,7 +137,8 @@ function SelectDrawerPage() {
         </DrawerWrapper>
       </div>
       {openModal && (
-        <CheckModal data={selectDrawer} openModal={openModal} closeModal={closeModal} />
+        // <CheckModal data={selectDrawer} openModal={openModal} closeModal={closeModal} />
+        <BottomSheet data={selectDrawer} isOpen={openModal} isClose={closeModal} />
       )}
     </>
   );

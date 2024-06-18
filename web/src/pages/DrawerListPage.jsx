@@ -5,6 +5,7 @@ import TopNavBar from '../components/TopNavBar';
 import CategoryButton from '../components/CategoryButton';
 import CheckModal from '../components/CheckModal';
 import DrawerModal from '../components/DrawerModal';
+import DrawerBottomSheet from '../components/bottomsheet/DrawerBottomSheet';
 
 const A11yHidden = styled.h1`
   position: absolute;
@@ -41,16 +42,17 @@ const Div = styled.div`
 
 const DrawerWrapper = styled.div`
   display: flex;
+  height: calc(100vh - ${props => 350 * props.theme.widthRatio}px);
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  height: calc(100vh - ${props => 270 * props.theme.widthRatio}px);
   box-sizing: border-box;
 `;
 
 const Figure = styled.figure`
+  margin-top: ${props => 30 * props.theme.widthRatio}px;
   width: 50%;
-  height: calc((100% - 40px) / 3);
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,7 +64,7 @@ const Figcaption = styled.figcaption`
   font-size: ${props => 26 * props.theme.widthRatio}px;
   font-weight: 400;
   line-height: normal;
-  margin-top: ${props => 15 * props.theme.widthRatio}px;
+  margin-top: ${props => 10 * props.theme.widthRatio}px;
 `;
 
 const DrawerImg = styled.img`
@@ -157,7 +159,7 @@ function DrawerListPage() {
         </DrawerWrapper>
       </div>
       {openModal && (
-        <DrawerModal data={selectDrawer} openModal={openModal} closeModal={closeModal} />
+        <DrawerBottomSheet data={selectDrawer} isOpen={openModal} isClose={closeModal} />
       )}
     </>
   );
