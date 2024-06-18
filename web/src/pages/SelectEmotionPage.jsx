@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import ButtonContainer from '../components/ButtonContainer';
 import Emotion from '../components/Emotion';
+import EmotionButton from '../components/EmotionButton';
 import TopNavBar from '../components/TopNavBar';
 
 const A11yHidden = styled.h1`
@@ -42,7 +42,6 @@ const Container = styled.div`
 
 function SelectEmotionPage() {
   const [selectedEmotion, setSelectedEmotion] = useState('0');
-
   const handleEmotionClick = id => {
     setSelectedEmotion(id);
   };
@@ -72,11 +71,13 @@ function SelectEmotionPage() {
         <Emotion src='/tired.png' label='피곤' onClick={() => handleEmotionClick(12)} />
       </EmotionContainer>
 
-      <ButtonContainer
+      <EmotionButton
         firstLabel='건너뛰기'
         secondLabel='선택완료'
         nextPath='write'
         emotionId={selectedEmotion}
+        firstDisabled={selectedEmotion !== '0'}
+        secondDisabled={selectedEmotion === '0'}
       />
     </Container>
   );
