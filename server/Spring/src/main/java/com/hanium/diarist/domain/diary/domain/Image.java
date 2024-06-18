@@ -21,7 +21,7 @@ public class Image extends BaseEntity {
     private Diary diary;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false,length = 500)
     private String imageUrl;
 
     // 프롬프트 일단 생략
