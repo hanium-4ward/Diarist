@@ -91,10 +91,14 @@ const Button = styled.button`
 
 function CheckModal({openModal, closeModal, data}) {
   if (!openModal) return null;
-  console.log(data);
+
+  const handleModalClick = e => {
+    e.stopPropagation(); // 이벤트 전파를 막음
+  };
+
   return ReactDOM.createPortal(
     <ModalBackground onClick={closeModal}>
-      <ModalContainer>
+      <ModalContainer onClick={handleModalClick}>
         <H3Wrapper>
           <H3>{data.artistName}</H3>
           <CloseButton src='/btn_x.png' onClick={closeModal} />

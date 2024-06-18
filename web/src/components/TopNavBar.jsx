@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 const A11yHidden = styled.h1`
@@ -59,13 +60,25 @@ function TopNavBar({page, progress, title}) {
   // page 페이지 이름
   // progress 단계
   // title 문구
+
+  const navigate = useNavigate();
+
+  // 뒤로가기 버튼 클릭 시 이동
+  const handleBack = () => {
+    navigate(-1);
+  };
+  // 앱에 메시지를 날려서 다시 앱으로 이동
+  const handleClose = () => {
+    window.ReactNativeWebView.postMessage('closeWebView');
+  };
+
   return (
     <>
       <Header>
         <A11yHidden>{page}</A11yHidden>
-        <Img src='/btn_prev.png' alt='뒤로가기' />
+        <Img src='/btn_prev.png' alt='뒤로가기' onClick={handleBack} />
         <Span>{progress} / 3</Span>
-        <CloseImg src='/btn_x.png' alt='닫기' />
+        <CloseImg src='/btn_x.png' alt='닫기' onClick={handleClose} />
       </Header>
       <H2>{title}</H2>
     </>

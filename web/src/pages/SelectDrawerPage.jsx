@@ -18,7 +18,7 @@ const DrawerWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
-  height: calc(100vh - ${props => 270 * props.theme.widthRatio}px);
+  height: calc(100vh - ${props => 400 * props.theme.widthRatio}px);
   box-sizing: border-box;
 `;
 
