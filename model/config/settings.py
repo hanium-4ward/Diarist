@@ -26,6 +26,9 @@ INSTALLED_APPS = [
 
     # APP
     'diary',
+
+    # s3 storage
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +76,25 @@ DATABASES = {
     }
 }
 
+
+# AWS S3 관련 설정 추가
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_S3_BUCKET_NAME = env("AWS_S3_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
+
+#Kafka 관련 설정
+KAFKA_BROKER_URL= env('KAFKA_BROKER_URL')
+KAFKA_TOPIC_CREATE= env('KAFKA_TOPIC_CREATE')
+KAFKA_TOPIC_RECREATE= env('KAFKA_TOPIC_RECREATE')
+KAFKA_TOPIC_RESPONSE = env('KAFKA_TOPIC_RESPONSE')
+KAFKA_CREATE_GROUP= env('KAFKA_CREATE_GROUP')
+KAFKA_RECREATE_GROUP= env('KAFKA_RECREATE_GROUP')
+KAFKA_RESPONSE_GROUP = env('KAFKA_RESPONSE_GROUP')
+
+# Open Ai 관련 설정
+OPENAI_API_KEY = env('OPENAI_API_KEY')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
