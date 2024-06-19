@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {keyframes} from 'styled-components';
+import useBottomSheet from '../hooks/useBottomSheet';
 
 const slideUp = keyframes`
   from {
@@ -8,6 +9,15 @@ const slideUp = keyframes`
   }
   to {
     transform: translateY(0);
+  }
+`;
+
+const slideDown = keyframes`
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
   }
 `;
 
@@ -30,8 +40,8 @@ const ModalContainer = styled.div`
   width: 100%;
   background: white; /* 컨테이너의 배경색 설정 */
   border-radius: 30px 30px 0 0; /* 모서리 둥글게 설정 */
-  padding-top: ${props => 66 * props.theme.widthRatio}px;
-  animation: ${slideUp} 0.7s ease; /* 애니메이션 적용 */
+  padding-top: ${props => 16 * props.theme.widthRatio}px;
+  animation: ${props => (props.isClosing ? slideDown : slideUp)} 0.7s ease;
 `;
 
 const H3Wrapper = styled.div`
@@ -40,16 +50,8 @@ const H3Wrapper = styled.div`
   align-items: center;
 `;
 
-const CloseButton = styled.img`
-  width: 5%;
-  position: absolute;
-  right: 0;
-  border: none;
-  background-color: transparent;
-  padding-right: ${props => 30 * props.theme.widthRatio}px;
-`;
-
 const H3 = styled.h3`
+  padding-top: ${props => 66 * props.theme.widthRatio}px;
   color: #000;
   text-align: center;
   font-size: ${props => 40 * props.theme.widthRatio}px;
@@ -90,14 +92,56 @@ const Button = styled.button`
 `;
 
 function CheckModal({openModal, closeModal, data}) {
+  const {sheet} = useBottomSheet();
   if (!openModal) return null;
-  console.log(data);
+
+  const [isClosing, setIsClosing] = useState(false);
+  const startYRef = useRef(0);
+  const currentYRef = useRef(0);
+
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [openModal]);
+
+  const handleTouchStart = e => {
+    startYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = e => {
+    currentYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = () => {
+    if (startYRef.current < currentYRef.current && currentYRef.current - startYRef.current > 100) {
+      setIsClosing(true);
+      setTimeout(() => {
+        closeModal();
+        setIsClosing(false);
+      }, 700);
+    }
+  };
+
   return ReactDOM.createPortal(
-    <ModalBackground onClick={closeModal}>
-      <ModalContainer>
+    <ModalBackground>
+      <ModalContainer
+        isClosing={isClosing}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <Wrapper>
+          <Handle />
+        </Wrapper>
         <H3Wrapper>
           <H3>{data.artistName}</H3>
-          <CloseButton src='/btn_x.png' onClick={closeModal} />
+          {/* <CloseButton src='/btn_x.png' onClick={closeModal} /> */}
         </H3Wrapper>
         <ExampleImg src={data.artistPicture} />
         <P>당신이 일기는 위의 그림 풍으로 재탄생됩니다.</P>
@@ -110,3 +154,7 @@ function CheckModal({openModal, closeModal, data}) {
 }
 
 export default CheckModal;
+
+export const MIN_Y = 60; // 바텀시트가 최대로 높이 올라갔을 때의 y 값
+export const MAX_Y = window.innerHeight - 80; // 바텀시트가 최소로 내려갔을 때의 y 값
+export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y; // 바텀시트의 세로 길이

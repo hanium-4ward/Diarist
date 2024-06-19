@@ -1,4 +1,5 @@
 import React from 'react';
+import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 
 const A11yHidden = styled.h1`
@@ -44,6 +45,8 @@ const CloseImg = styled.img`
   padding-bottom: ${props => 33.5 * props.theme.widthRatio}px;
 `;
 const H2 = styled.h2`
+  display: flex;
+  flex-direction: column;
   text-align: center;
   font-size: ${props => 42 * props.theme.widthRatio}px;
   font-style: normal;
@@ -55,19 +58,37 @@ const H2 = styled.h2`
   margin-top: ${props => 20 * props.theme.widthRatio}px;
   word-break: keep-all;
 `;
-function TopNavBar({page, progress, title}) {
+const TitleSpan = styled.span``;
+
+function TopNavBar({page, progress, title1, title2}) {
   // page 페이지 이름
   // progress 단계
-  // title 문구
+  // title1 첫번쨰출
+  // title2 두번쨰 줄
+
+  const navigate = useNavigate();
+
+  // 뒤로가기 버튼 클릭 시 이동
+  const handleBack = () => {
+    navigate(-1);
+  };
+  // 앱에 메시지를 날려서 다시 앱으로 이동
+  const handleClose = () => {
+    window.ReactNativeWebView.postMessage('closeWebView');
+  };
+
   return (
     <>
       <Header>
         <A11yHidden>{page}</A11yHidden>
-        <Img src='/btn_prev.png' alt='뒤로가기' />
+        <Img src='/btn_prev.png' alt='뒤로가기' onClick={handleBack} />
         <Span>{progress} / 3</Span>
-        <CloseImg src='/btn_x.png' alt='닫기' />
+        <CloseImg src='/btn_x.png' alt='닫기' onClick={handleClose} />
       </Header>
-      <H2>{title}</H2>
+      <H2>
+        <TitleSpan>{title1}</TitleSpan>
+        <TitleSpan>{title2}</TitleSpan>
+      </H2>
     </>
   );
 }
