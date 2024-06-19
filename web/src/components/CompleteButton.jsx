@@ -33,6 +33,7 @@ const CheckButton = styled.button`
 `;
 
 function CompleteButton({handleRedraw, handleCheck}) {
+  console.log(handleRedraw);
   return (
     <ButtonWrapper>
       <ResetButton onClick={handleRedraw}>다시그리기</ResetButton>
