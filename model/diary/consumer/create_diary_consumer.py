@@ -4,8 +4,7 @@ import sys
 from datetime import datetime
 
 import django
-from confluent_kafka import Consumer, KafkaError
-from dotenv import load_dotenv
+from confluent_kafka import Consumer, KafkaError, Producer
 from openai import OpenAI
 
 sys.path.append('/app/')
@@ -13,15 +12,15 @@ sys.path.append('/app/')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
+from django.conf import settings
 from diary.models import Diary, User, Emotion, Image, Artist
+from diary.utils import S3ImgUploader
 
 
-load_dotenv()
-
-KAFKA_BROKER_URL = os.getenv('KAFKA_BROKER_URL')
-CREATE_DIARY_TOPIC = os.getenv('KAFKA_TOPIC_CREATE')
-GROUP_ID = os.getenv('KAFKA_CREATE_GROUP')
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+KAFKA_BROKER_URL = settings.KAFKA_BROKER_URL
+CREATE_DIARY_TOPIC = settings.KAFKA_TOPIC_CREATE
+GROUP_ID = settings.KAFKA_CREATE_GROUP
+OPENAI_API_KEY = settings.OPENAI_API_KEY
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -69,10 +68,39 @@ def process_message(message):
 
         print(f"Generated image URL: {image_url}")
     
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON: {e}")
-        print(f"Failed message: {message.value()}")
+        s3_url = S3ImgUploader.upload_from_url(image_url)
 
+        if not s3_url:
+            raise Exception("Failed to upload image to S3")
+
+        image = Image.objects.create(image_url=s3_url)
+
+        user = User.objects.get(user_id=user_id)
+
+        new_diary = Diary(
+            user=user,
+            diary_date=diary_date,
+            content=content,
+            emotion=emotion,
+            artist=artist,
+            image=image
+        )
+        new_diary.save()
+
+    except Diary.DoesNotExist:
+        return f"Diary for user {user_id} on {diary_date} does not exist."
+    except User.DoesNotExist:
+        return f"User with id {user_id} does not exist."
+    except Artist.DoesNotExist:
+        return f"Artist with id {artist_id} does not exist."
+    except Emotion.DoesNotExist:
+        return f"Emotion with id {emotion_id} does not exist."
+    except KeyError as e:
+        return f"Missing key in message: {e}"
+    except json.JSONDecodeError as e:
+        return f"Error decoding JSON: {e}"
+    except Exception as e:
+        return f"Error processing message: {e}"
 
 
 def consume():

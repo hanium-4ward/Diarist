@@ -23,7 +23,7 @@ class Image(models.Model):
     image (일기에 대한 그림) table
     '''
     image_id = models.AutoField(primary_key=True)
-    image_url = models.CharField(max_length=255)
+    image_url = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
