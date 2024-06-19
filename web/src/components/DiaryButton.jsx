@@ -12,6 +12,7 @@ const FirstButton = styled.button`
   border-radius: 15px;
   border: 1px solid #000;
   background: #fff;
+  color: ${props => (props.disabled ? '#999' : '#000')};
   margin-left: ${props => 30 * props.theme.widthRatio}px;
   font-size: ${props => 24 * props.theme.widthRatio}px;
   font-style: normal;

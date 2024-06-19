@@ -34,7 +34,7 @@ const Container = styled.div`
 const Textarea = styled.textarea`
   width: ${props => 500 * props.theme.widthRatio}px;
   height: ${props =>
-    props.iskeyboardvisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
+    props.isKeyboardVisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
   border-radius: 20px;
   border: 1px solid #666;
   overflow: hidden;
@@ -72,15 +72,13 @@ const Span = styled.span`
 `;
 
 function WritingDiaryPage() {
-  // 감정 선택 페이지에서 전달받은 데이터
-
   const location = useLocation();
   const info = location.state;
 
-  // 글자수 세기
   const [inputCount, setInputCount] = useState(0);
   const [text, setText] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 
   const onInputHandler = e => {
     const inputValue = e.target.value;
@@ -95,42 +93,35 @@ function WritingDiaryPage() {
 
   useEffect(() => {
     const handleResize = () => {
-      // window.innerHeight가 줄어들면 키보드가 올라온 것으로 간주
-      if (window.innerHeight < window.outerHeight - 100) {
-        setIsKeyboardVisible(true);
-      } else {
-        setIsKeyboardVisible(false);
+      if (window.visualViewport) {
+        setViewportHeight(window.visualViewport.height);
+        setIsKeyboardVisible(window.visualViewport.height < window.outerHeight);
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    // 초기 상태 확인
+    window.visualViewport.addEventListener('resize', handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.visualViewport.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
-    <Container>
+    <Container style={{height: viewportHeight}}>
       <div>
         <A11yHidden>일기 작성</A11yHidden>
         <TopNavBar progress={2} />
         <H2>당신의 특별한 일상을</H2>
         <H2>기록해주세요</H2>
       </div>
-      {/* 일기 작성 */}
       <TextareaContainer>
-        <Textarea
-          onChange={onInputHandler}
-          value={text}
-          iskeyboardvisible={isKeyboardVisible ? 'true' : undefined}
-        />
+        <Textarea onChange={onInputHandler} value={text} isKeyboardVisible={isKeyboardVisible} />
         <InputP>
           {inputCount}
           <Span>/1000</Span>
         </InputP>
       </TextareaContainer>
-      {/* 버튼 컨테이너 */}
       <DiaryButton
         firstLabel='초기화'
         secondLabel='작성완료'
