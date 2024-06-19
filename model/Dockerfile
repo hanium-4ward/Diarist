@@ -14,4 +14,4 @@ COPY .env /app/.env
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:8000 & python diary/consumer/create_diary_consumer.py & python diary/consumer/re_create_diary_consumer.py"]
