@@ -19,6 +19,7 @@ from diary.utils import S3ImgUploader
 
 KAFKA_BROKER_URL = settings.KAFKA_BROKER_URL
 CREATE_DIARY_TOPIC = settings.KAFKA_TOPIC_CREATE
+RESPONSE_DIARY_TOPIC = settings.KAFKA_TOPIC_RESPONSE
 GROUP_ID = settings.KAFKA_CREATE_GROUP
 OPENAI_API_KEY = settings.OPENAI_API_KEY
 
@@ -47,6 +48,13 @@ def generate_image(description):
         n=1
     )
     return response.data[0].url
+
+
+def send_response(diary_id):
+    producer = Producer({'bootstrap.servers': KAFKA_BROKER_URL})
+    response_message = json.dumps({"diary_id": diary_id})
+    producer.produce(RESPONSE_DIARY_TOPIC, key=str(diary_id), value=response_message)
+    producer.flush()
 
 
 def process_message(message):
@@ -87,6 +95,8 @@ def process_message(message):
         )
         new_diary.save()
 
+        send_response(new_diary.diary_id)
+    
     except Diary.DoesNotExist:
         return f"Diary for user {user_id} on {diary_date} does not exist."
     except User.DoesNotExist:
