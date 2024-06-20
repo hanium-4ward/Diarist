@@ -3,13 +3,13 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 const Div = styled.div`
-  font-weight: 900;
+  display: flex;
+  flex-direction: column;
 `;
 
 function Calendar() {
   return (
-    <div className='flex flex-col'>
-      <Div>하얀떡볶이 </Div>
+    <Div>
       <Link to='/complete'>완성페이지 이동</Link>
       <Link to='/write'>작성페이지 이동</Link>
       <Link to='/selectdrawer'>화가 선택 페이지 이동</Link>
@@ -17,7 +17,8 @@ function Calendar() {
       <Link to='/list'>리스트 보기 페이지 이동</Link>
       <Link to='emotion'>감정 선택 페이지 이동</Link>
       <Link to='/drawerlist'>asdad</Link>
-    </div>
+      <Link to='/detail'>일기 상세 페이지</Link>
+    </Div>
   );
 }
 

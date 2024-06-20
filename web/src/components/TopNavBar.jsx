@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
+import CheckModal from './CheckModal';
 
 const A11yHidden = styled.h1`
   position: absolute;
@@ -67,28 +68,32 @@ function TopNavBar({page, progress, title1, title2}) {
   // title2 두번쨰 줄
 
   const navigate = useNavigate();
-
+  const [isOpen, setIsOpen] = useState(false);
   // 뒤로가기 버튼 클릭 시 이동
   const handleBack = () => {
     navigate(-1);
   };
-  // 앱에 메시지를 날려서 다시 앱으로 이동
-  const handleClose = () => {
-    window.ReactNativeWebView.postMessage('closeWebView');
+
+  const openModal = () => {
+    setIsOpen(true);
   };
 
+  const closeModal = () => {
+    setIsOpen(false);
+  };
   return (
     <>
       <Header>
         <A11yHidden>{page}</A11yHidden>
         <Img src='/btn_prev.png' alt='뒤로가기' onClick={handleBack} />
         <Span>{progress} / 3</Span>
-        <CloseImg src='/btn_x.png' alt='닫기' onClick={handleClose} />
+        <CloseImg src='/btn_x.png' alt='닫기' onClick={openModal} />
       </Header>
       <H2>
         <TitleSpan>{title1}</TitleSpan>
         <TitleSpan>{title2}</TitleSpan>
       </H2>
+      {isOpen && <CheckModal isOpen={isOpen} closeModal={closeModal} />}
     </>
   );
 }

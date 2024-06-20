@@ -1,7 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {keyframes} from 'styled-components';
-import useBottomSheet from '../hooks/useBottomSheet';
 
 const slideUp = keyframes`
   from {
@@ -85,13 +84,8 @@ const SVGWrapper = styled.div`
   margin-bottom: ${props => 0 * props.theme.widthRatio}px;
 `;
 
-function CheckModal({isOpen, closeModal}) {
+function ResetModal({isOpen, closeModal}) {
   if (!isOpen) return null;
-
-  const handleClose = () => {
-    (window.ReactNativeWebView || window).postMessage('closeWebView');
-  };
-
   return ReactDOM.createPortal(
     <ModalBackground onClick={closeModal}>
       <ModalContainer
@@ -116,14 +110,14 @@ function CheckModal({isOpen, closeModal}) {
           </svg>
         </SVGWrapper>
 
-        <Title>일기 작성을 그만두시나요?</Title>
-        <SubTitle>지금 작성한 내용들이 모두 사라집니다.</SubTitle>
+        <Title>그림을 다시 그리나요?</Title>
+        <SubTitle>지금 생성된 그림을 영구 삭제됩니다.</SubTitle>
         <ButtonWrapper>
           {' '}
           <Button onClick={closeModal} $isCancel>
             취소
           </Button>
-          <Button onClick={handleClose}>나가기</Button>
+          <Button>다시 그리기</Button>
         </ButtonWrapper>
       </ModalContainer>
     </ModalBackground>,
@@ -131,4 +125,4 @@ function CheckModal({isOpen, closeModal}) {
   );
 }
 
-export default CheckModal;
+export default ResetModal;
