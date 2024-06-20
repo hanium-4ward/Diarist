@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useLocation} from 'react-router-dom';
-import styled, {useTheme} from 'styled-components';
-import ButtonContainer from '../components/ButtonContainer';
+import styled from 'styled-components';
+import DiaryButton from '../components/DiaryButton';
 import TopNavBar from '../components/TopNavBar';
 
 const A11yHidden = styled.h1`
@@ -24,37 +24,27 @@ const H2 = styled.h2`
   letter-spacing: -0.63px;
 `;
 
-const P = styled.p`
-  text-align: center;
-  font-size: ${props => 24 * props.theme.widthRatio}px;
-  font-weight: 300;
-  line-height: normal;
-  letter-spacing: -0.36px;
-  margin-top: ${props => 20 * props.theme.widthRatio}px;
-`;
-
 const Container = styled.div`
-  margin-left: ${props => 30 * props.theme.widthRatio}px;
-  margin-right: ${props => 30 * props.theme.widthRatio}px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
 `;
 
 const Textarea = styled.textarea`
   width: ${props => 500 * props.theme.widthRatio}px;
   height: ${props =>
-    props.iskeyboardvisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
-  border-radius: 20px;
-  border: 1px solid #666;
-  overflow: hidden;
+    props.isKeyboardVisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
+  border-radius: ${props => 20 * props.theme.widthRatio}px;
   padding: ${props => 40 * props.theme.widthRatio}px;
   margin-top: ${props => 60 * props.theme.widthRatio}px;
   text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: ${props => 24 * props.theme.widthRatio}px;
   font-weight: 400;
-  line-height: 40px;
+  line-height: ${props => 40 * props.theme.widthRatio}px;
   letter-spacing: -0.36px;
   transition: height 0.3s ease;
-  outline: none;
+  outline: ${props => (props.isKeyboardVisible ? '1px solid #000' : '1px solid #999')};
 `;
 
 const InputP = styled.p`
@@ -66,6 +56,11 @@ const InputP = styled.p`
   margin-bottom: ${props => 60 * props.theme.widthRatio}px;
 `;
 
+const TextareaContainer = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 const Span = styled.span`
   font-size: ${props => 20 * props.theme.widthRatio}px;
   font-weight: 300;
@@ -74,16 +69,13 @@ const Span = styled.span`
 `;
 
 function WritingDiaryPage() {
-  // 감정 선택 페이지에서 전달받은 데이터
-  const theme = useTheme();
-
   const location = useLocation();
   const info = location.state;
 
-  // 글자수 세기
   const [inputCount, setInputCount] = useState(0);
   const [text, setText] = useState('');
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 
   const onInputHandler = e => {
     const inputValue = e.target.value;
@@ -91,55 +83,53 @@ function WritingDiaryPage() {
     setText(inputValue);
   };
 
+  const resetInput = () => {
+    setText('');
+    setInputCount(0);
+  };
+
   useEffect(() => {
     const handleResize = () => {
-      // window.innerHeight가 줄어들면 키보드가 올라온 것으로 간주
-      if (window.innerHeight < window.outerHeight - 100) {
-        setIsKeyboardVisible(true);
-      } else {
-        setIsKeyboardVisible(false);
+      if (window.visualViewport) {
+        setViewportHeight(window.visualViewport.height);
+        setIsKeyboardVisible(window.visualViewport.height < window.outerHeight);
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    // 초기 상태 확인
+    window.visualViewport.addEventListener('resize', handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.visualViewport.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
-    <>
-      {/* 상단 메뉴 컨테이너 */}
-      <A11yHidden>일기 작성</A11yHidden>
-      <TopNavBar progress={2} />
-      <Container>
-        {/* 일기 작성 타이틀 */}
-        <div>
-          <H2>당신의 특별한 일상을</H2>
-          <H2>기록해주세요</H2>
-          <P>당신의 일기는 선택한 화가의 그림으로 재탄생 됩니다.</P>
-        </div>
-        {/* 일기 작성 */}
-        <Textarea
-          onChange={onInputHandler}
-          value={text}
-          iskeyboardvisible={isKeyboardVisible ? 'true' : undefined}
-        />
+    <Container style={{height: viewportHeight}}>
+      <div>
+        <A11yHidden>일기 작성</A11yHidden>
+        <TopNavBar progress={2} />
+        <H2>당신의 특별한 일상을</H2>
+        <H2>기록해주세요</H2>
+      </div>
+      <TextareaContainer>
+        <Textarea onChange={onInputHandler} value={text} isKeyboardVisible={isKeyboardVisible} />
         <InputP>
           {inputCount}
           <Span>/1000</Span>
         </InputP>
-      </Container>
-      {/* 버튼 컨테이너 */}
-      <ButtonContainer
-        firstLabel='건너뛰기'
-        secondLabel='다 적었어요'
+      </TextareaContainer>
+      <DiaryButton
+        firstLabel='초기화'
+        secondLabel='작성완료'
         nextPath='selectdrawer'
         emotionId={info.emotionId}
         content={text}
+        firstDisabled={text.length === 0}
+        secondDisabled={text.length === 0}
+        deleteText={resetInput}
       />
-    </>
+    </Container>
   );
 }
 

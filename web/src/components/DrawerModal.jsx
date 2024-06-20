@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {keyframes} from 'styled-components';
 
@@ -27,6 +27,9 @@ const ModalBackground = styled.section`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 `;
 
 const ModalContainer = styled.div`
@@ -34,16 +37,18 @@ const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  position: relative;
   bottom: 0;
+  width: 100%;
+  max-height: 50%;
   background: white;
   border-radius: 30px 30px 0 0;
   padding-top: ${props => 66 * props.theme.widthRatio}px;
   padding-left: ${props => 70 * props.theme.widthRatio}px;
   padding-right: ${props => 70 * props.theme.widthRatio}px;
   animation: ${props => (props.isClosing ? slideDown : slideUp)} 0.7s ease;
-  overflow: hidden; /* 넘치는 내용을 숨김 */
-  box-sizing: border-box; /* 패딩을 포함한 박스 모델 설정 */
+  overflow: hidden;
+  box-sizing: border-box;
 `;
 
 const H3 = styled.h3`
@@ -58,8 +63,10 @@ const H3 = styled.h3`
 
 const ImgWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 const Img = styled.img`
@@ -72,6 +79,17 @@ function DrawerModal({openModal, closeModal, data}) {
   const [isClosing, setIsClosing] = useState(false);
   const startYRef = useRef(0);
   const currentYRef = useRef(0);
+
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [openModal]);
 
   const handleTouchStart = e => {
     startYRef.current = e.touches[0].clientY;
@@ -87,14 +105,14 @@ function DrawerModal({openModal, closeModal, data}) {
       setTimeout(() => {
         closeModal();
         setIsClosing(false);
-      }, 700); // 애니메이션 지속 시간과 맞추기
+      }, 700);
     }
   };
 
   if (!openModal) return null;
 
   return ReactDOM.createPortal(
-    <ModalBackground onClick={closeModal}>
+    <ModalBackground>
       <ModalContainer
         isClosing={isClosing}
         onTouchStart={handleTouchStart}
