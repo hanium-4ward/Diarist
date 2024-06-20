@@ -27,7 +27,7 @@ const H2 = styled.h2`
 const EmotionContainer = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  gap: ${props => 60 * props.theme.widthRatio}px;
+  gap: ${props => 30 * props.theme.widthRatio}px;
   justify-content: space-between;
   margin-left: ${props => 80 * props.theme.widthRatio}px;
   margin-right: ${props => 80 * props.theme.widthRatio}px;
@@ -43,32 +43,43 @@ const Container = styled.div`
 function SelectEmotionPage() {
   const [selectedEmotion, setSelectedEmotion] = useState('0');
   const handleEmotionClick = id => {
-    setSelectedEmotion(id);
+    setSelectedEmotion(String(id));
   };
+
+  const emotions = [
+    {src: '/happy.png', label: '행복', id: 1},
+    {src: '/fun.png', label: '기쁨', id: 2},
+    {src: '/thank.png', label: '감사', id: 3},
+    {src: '/expect.png', label: '기대', id: 4},
+    {src: '/excite.png', label: '신남', id: 5},
+    {src: '/flutter.png', label: '설렘', id: 6},
+    {src: '/sad.png', label: '슬픔', id: 7},
+    {src: '/angry.png', label: '화남', id: 8},
+    {src: '/annoy.png', label: '짜증', id: 9},
+    {src: '/worry.png', label: '걱정', id: 10},
+    {src: '/regret.png', label: '후회', id: 11},
+    {src: '/tired.png', label: '피곤', id: 12},
+  ];
 
   return (
     <Container>
       <div>
         <A11yHidden>감정 선택 페이지</A11yHidden>
         <TopNavBar progress={1} />
-        {/* 캘린더 페이지 완성되면 날짜부분 함수 들어갈 예정 */}
         <H2>6월 16일 하루는 어떤</H2>
         <H2>감정이였나요?</H2>
       </div>
 
       <EmotionContainer>
-        <Emotion src='/happy.png' label='행복' onClick={() => handleEmotionClick(1)} />
-        <Emotion src='/fun.png' label='기쁨' onClick={() => handleEmotionClick(2)} />
-        <Emotion src='/thank.png' label='감사' onClick={() => handleEmotionClick(3)} />
-        <Emotion src='/expect.png' label='기대' onClick={() => handleEmotionClick(4)} />
-        <Emotion src='/excite.png' label='신남' onClick={() => handleEmotionClick(5)} />
-        <Emotion src='/flutter.png' label='설렘' onClick={() => handleEmotionClick(6)} />
-        <Emotion src='/sad.png' label='슬픔' onClick={() => handleEmotionClick(7)} />
-        <Emotion src='/angry.png' label='화남' onClick={() => handleEmotionClick(8)} />
-        <Emotion src='/annoy.png' label='짜증' onClick={() => handleEmotionClick(9)} />
-        <Emotion src='/worry.png' label='걱정' onClick={() => handleEmotionClick(10)} />
-        <Emotion src='/regret.png' label='후회' onClick={() => handleEmotionClick(11)} />
-        <Emotion src='/tired.png' label='피곤' onClick={() => handleEmotionClick(12)} />
+        {emotions.map(emotion => (
+          <Emotion
+            key={emotion.id}
+            src={emotion.src}
+            label={emotion.label}
+            onClick={() => handleEmotionClick(emotion.id)}
+            isSelected={selectedEmotion === String(emotion.id)}
+          />
+        ))}
       </EmotionContainer>
 
       <EmotionButton

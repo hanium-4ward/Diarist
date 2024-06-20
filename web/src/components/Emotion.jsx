@@ -12,6 +12,7 @@ const Figcaption = styled.figcaption`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  color: #000;
 `;
 
 const Button = styled.button`
@@ -25,14 +26,21 @@ const Button = styled.button`
   align-items: center;
 `;
 
-function Emotion({src, label, onClick}) {
+const Figure = styled.figure`
+  padding: ${props => 10 * props.theme.widthRatio}px;
+  border-radius: 15px;
+  opacity: ${props => (props.isSelected ? 1 : 0.3)};
+  transition: opacity 0.8s ease;
+`;
+
+function Emotion({src, label, onClick, isSelected}) {
   return (
     <li>
       <Button onClick={onClick}>
-        <figure>
+        <Figure isSelected={isSelected}>
           <Image src={src} alt={label} />
           <Figcaption>{label}</Figcaption>
-        </figure>
+        </Figure>
       </Button>
     </li>
   );

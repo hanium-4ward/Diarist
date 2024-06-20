@@ -35,19 +35,16 @@ const Textarea = styled.textarea`
   width: ${props => 500 * props.theme.widthRatio}px;
   height: ${props =>
     props.isKeyboardVisible ? 200 * props.theme.widthRatio : 752 * props.theme.widthRatio}px;
-  border-radius: 20px;
-  border: 1px solid #666;
-  overflow: hidden;
+  border-radius: ${props => 20 * props.theme.widthRatio}px;
   padding: ${props => 40 * props.theme.widthRatio}px;
   margin-top: ${props => 60 * props.theme.widthRatio}px;
   text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: ${props => 24 * props.theme.widthRatio}px;
   font-weight: 400;
-  line-height: 40px;
+  line-height: ${props => 40 * props.theme.widthRatio}px;
   letter-spacing: -0.36px;
   transition: height 0.3s ease;
-  outline: none;
+  outline: ${props => (props.isKeyboardVisible ? '1px solid #000' : '1px solid #999')};
 `;
 
 const InputP = styled.p`
