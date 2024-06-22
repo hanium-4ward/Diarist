@@ -1,6 +1,6 @@
 ## Jira 티켓
 
-Jira 티켓을 작성하십시오.
+[PROJ-00](https://hanium.atlassian.net/browse/PROJ-00)
 
 ## 제목
 
