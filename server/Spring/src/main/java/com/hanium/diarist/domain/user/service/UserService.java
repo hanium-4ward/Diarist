@@ -20,4 +20,11 @@ public class UserService {
         return user;
     }
 
+    @Transactional
+    public User registerUser(String email, String name,SocialCode socialCode, String refreshToken){
+        User user = userRepository.save(User.create(email,name, socialCode));
+//        authRepository.save(Auth.create(user, refreshToken);
+        return user;
+    }
+
 }
