@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.hanium.diarist.common.exception.BusinessException;
 import com.hanium.diarist.common.exception.ErrorCode;
+import com.hanium.diarist.common.security.jwt.JwtTokenProvider;
 import com.hanium.diarist.domain.oauth.dto.KakaoUserProfile;
 import com.hanium.diarist.domain.oauth.dto.ResponseJwtToken;
 import com.hanium.diarist.domain.oauth.properties.KakaoProperties;
@@ -38,6 +39,7 @@ public class KakaoOauthService {
     private final ObjectMapper objectMapper;
     private final ValidateUserService validateUserService;
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public ResponseJwtToken login(String code) {
@@ -45,16 +47,19 @@ public class KakaoOauthService {
         String accessToken = kakaoAccessToken[0];
         String refreshToken = kakaoAccessToken[1];
         KakaoUserProfile userProfile = getUserProfile(accessToken);
-        System.out.println(userProfile.toString());
+//        System.out.println(userProfile.toString());
         User user = validateUserService.validateRegisteredUserByEmail(userProfile.getKakao_account().getEmail());
 
         if(user == null){ // 회원가입을 해야하는 경우
             user = userService.registerUser(userProfile.getKakao_account().getEmail(), userProfile.getProperties().getNickname(), SocialCode.KAKAO, refreshToken);
         }
-//        String jwtAccessToken = jwtTokenProvider.createToken(user.getId(), user.getEmail());
-        System.out.println(user);
+        String jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(),
+                user.getUserRole());
+        String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(),
+                user.getUserRole());
 
-        return ResponseJwtToken.of(accessToken, "");
+
+        return ResponseJwtToken.of(jwtAccessToken, jwtRefreshToken);
     }
 
 
@@ -84,7 +89,7 @@ public class KakaoOauthService {
 
             // 결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+//            System.out.println("responseCode : " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = "";
@@ -92,7 +97,7 @@ public class KakaoOauthService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+//            System.out.println("response body : " + result);
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result); // 토큰을 얻을 수 있음.
             accessToken = element.getAsJsonObject().get("access_token").getAsString();

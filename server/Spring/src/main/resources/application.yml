@@ -23,7 +23,6 @@ springdoc:
     groups-order: DESC
     tags-sorter: alpha
 
-jwt:
-  secret: ${JWT_SECRET}
+
 
 

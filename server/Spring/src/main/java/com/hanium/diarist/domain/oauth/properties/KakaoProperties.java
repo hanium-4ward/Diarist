@@ -22,7 +22,7 @@ public class KakaoProperties {
 
     private String tokenUrl = "https://kauth.kakao.com/oauth/token";
     private String userInfoUrl = "https://kapi.kakao.com/v2/user/me";
-    private String redirectUri = "http://localhost:8080/login/oauth/code";
+    private String redirectUri = "http://localhost:8080/oauth2/kakao/login";
     private String deleteAccountUrl = "https://kapi.kakao.com/v1/user/unlink";
 
 }
