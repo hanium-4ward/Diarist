@@ -8,6 +8,7 @@ import com.hanium.diarist.domain.diary.dto.BookmarkDiaryResponse;
 import com.hanium.diarist.domain.diary.dto.DiaryDetailResponse;
 import com.hanium.diarist.domain.diary.exception.DiaryNotFoundException;
 import com.hanium.diarist.domain.diary.repository.DiaryRepository;
+import com.hanium.diarist.domain.diary.repository.ImageRepository;
 import com.hanium.diarist.domain.emotion.domain.Emotion;
 import com.hanium.diarist.domain.user.domain.SocialCode;
 import com.hanium.diarist.domain.user.domain.User;
@@ -38,6 +39,8 @@ class DiaryServiceTest {
 
     @Mock
     private ValidateUserService validateUserService;
+    @Mock
+    private ImageRepository imageRepository;
     @Mock
     private S3Client s3Client;
 
@@ -184,7 +187,7 @@ class DiaryServiceTest {
         // then
         verify(s3Client).deleteObject(any(DeleteObjectRequest.class));
         assertNotNull(mockDiary.getDeletedAt()); // Soft delete 확인
-        assertEquals(mockDiary.getImage().getImageUrl(), "deleted");
+        verify(imageRepository).delete(image);
     }
 
 

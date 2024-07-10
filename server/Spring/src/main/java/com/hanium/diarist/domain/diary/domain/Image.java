@@ -18,7 +18,6 @@ public class Image extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @NotNull
     @OneToOne(mappedBy = "image",fetch = FetchType.LAZY)
     private Diary diary;
 
@@ -34,6 +33,7 @@ public class Image extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
+    @Deprecated
     public void deleteImage(){
         this.imageUrl = "deleted";
     }

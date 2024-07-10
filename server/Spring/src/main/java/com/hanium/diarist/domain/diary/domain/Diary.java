@@ -5,6 +5,7 @@ import com.hanium.diarist.common.entity.BaseEntityWithUpdate;
 import com.hanium.diarist.domain.artist.domain.Artist;
 import com.hanium.diarist.domain.emotion.domain.Emotion;
 import com.hanium.diarist.domain.user.domain.User;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -52,7 +53,7 @@ public class Diary extends BaseEntityWithUpdate {
     @NotNull
     private boolean favorite;
 
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -91,7 +92,10 @@ public class Diary extends BaseEntityWithUpdate {
         this.image = image;
     }
 
+
+
     public void deleteDiary() {
         this.deletedAt = LocalDateTime.now();
+        this.image = null;
     }// 일기 삭제
 }

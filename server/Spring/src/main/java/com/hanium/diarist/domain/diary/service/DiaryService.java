@@ -6,6 +6,7 @@ import com.hanium.diarist.domain.diary.dto.BookmarkDiaryResponse;
 import com.hanium.diarist.domain.diary.dto.DiaryDetailResponse;
 import com.hanium.diarist.domain.diary.exception.DiaryNotFoundException;
 import com.hanium.diarist.domain.diary.repository.DiaryRepository;
+import com.hanium.diarist.domain.diary.repository.ImageRepository;
 import com.hanium.diarist.domain.user.service.ValidateUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiaryService {
     private final DiaryRepository diaryRepository;
+    private final ImageRepository imageRepository;
     private final ValidateUserService validateUserService;
     private final S3Client s3Client;
 
@@ -73,10 +75,10 @@ public class DiaryService {
         Image image = diary.getImage();
         String imageUrl = diary.getImage().getImageUrl();
         imageUrl = imageUrl.substring(imageUrl.indexOf("/", imageUrl.indexOf("//") + 2) + 1);
-        image.deleteImage();
 
         deleteFileFromS3(bucket,imageUrl);
         diary.deleteDiary();
+        imageRepository.delete(image);
     }
 
     private void deleteFileFromS3(String bucketName, String fileKey) {
