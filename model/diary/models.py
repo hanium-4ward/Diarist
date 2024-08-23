@@ -40,7 +40,9 @@ class Artist(models.Model):
     artist_prompt = models.CharField(max_length=1000)
     description = models.CharField(max_length=255)
     example_picture = models.CharField(max_length=200)
+    examples = models.CharField(max_length=255)
     period = models.CharField(max_length=255)
+    detail_period = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
