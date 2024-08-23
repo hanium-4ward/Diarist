@@ -1,7 +1,4 @@
-import time 
-import json
-import os
-import sys
+import json, os, re, sys
 from datetime import datetime
 
 import django
@@ -9,7 +6,8 @@ from celery import shared_task
 from confluent_kafka import Producer
 from openai import OpenAI
 from deep_translator import GoogleTranslator
-from konlpy.tag import Okt
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 sys.path.append('/app/')
 
@@ -30,7 +28,8 @@ OPENAI_API_KEY = settings.OPENAI_API_KEY
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-okt = Okt()
+
+stop_words_list = stopwords.words('english')
 
 def translate_text(text, src='ko', dest='en'):
     '''
@@ -40,48 +39,25 @@ def translate_text(text, src='ko', dest='en'):
     return translated
 
 
-def extract_keywords(text, top_n=10):
+def clean_token(token):
     '''
-    KoNLPY를 사용하여 텍스트에서 명사 추출 및 중복 제거
+    정규 표현식을 사용해 불필요한 문장 부호 제거
     '''
-    try:
-        nouns = okt.nouns(text) 
-        unique_nouns = list(nouns)
-        translated_nouns = [translate_text(noun, src='ko', dest='en').lower() for noun in unique_nouns]
-        if len(translated_nouns) == 0:
-            raise ValueError("No keywords extracted")
-    except (ValueError, IndexError) as e:
-        print(f"키워드 추출에 실패했습니다. 기본 키워드를 사용합니다: {str(e)}")
-        translated_nouns = text.split()[:top_n]
-    return translated_nouns
+    token = re.sub(r'\W+', '', token)
+    return token
 
 
-# def generate_description(diary_text, artist_style, emotion):
-#     '''
-#     GPT description 생성
-#     '''
-#     keywords = extract_keywords(diary_text)
-#     translated_diary_text = translate_text(diary_text)
-#     translated_emotion = translate_text(emotion)
+def extract_keywords(text):
+    '''
+    불필요한 조사 제거 및 키워드 추출
+    '''
+    word_tokens = word_tokenize(text.lower())
+    result = []
 
-#     query = (f"Generate a simple, non-exaggerated description of a single scene based on the diary entry: '{translated_diary_text}'. "
-#              f"The description should be in the style of {artist_style}, including key characteristics like color palette, brush strokes, and composition and focus only on the essential elements mentioned in the diary. "
-#              f"Ensure that the following keywords are included and emphasized: {keywords}. "
-#              f"Reflect the emotion '{translated_emotion}' throughout the painting. "
-#              f"Do not add any additional details or elements, and ensure no people are included in the description. "
-#              f"Draw the picture without being subject to copyright and content violation policies.")
-    
-#     response = client.chat.completions.create(
-#         model="gpt-4",
-#         messages=[
-#             {"role": "system", "content": (f"Create a simple, clear description of a single scene based on the user's diary entry, focusing on the landscape and objects mentioned. "
-#                                            f"Ensure the following emphasized keywords are included: {keywords}. "
-#                                            f"Reflect the emotion '{translated_emotion}' throughout the painting. "
-#                                            f"Do not include any people. Follow the specified {artist_style} style without exaggeration or adding extra elements.")},
-#             {"role": "user", "content": query}
-#         ],
-#     )
-#     return response.choices[0].message.content
+    for w in word_tokens:
+        if w not in stop_words_list and clean_token(w) != '':
+            result.append(w)
+    return result
 
 
 def generate_image(diary_text, artist_style, emotion, artist_prompt, example_picture):
