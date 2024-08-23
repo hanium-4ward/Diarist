@@ -1,5 +1,6 @@
-import json, os, re, sys
+import json, os, re, sys, random, requests
 from datetime import datetime
+from io import BytesIO
 
 import django
 from celery import shared_task
@@ -25,6 +26,7 @@ CREATE_DIARY_TOPIC = settings.KAFKA_TOPIC_CREATE
 RESPONSE_DIARY_TOPIC = settings.KAFKA_TOPIC_RESPONSE
 GROUP_ID = settings.KAFKA_CREATE_GROUP
 OPENAI_API_KEY = settings.OPENAI_API_KEY
+STABILITY_API_KEY = settings.STABILITY_API_KEY
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -60,41 +62,156 @@ def extract_keywords(text):
     return result
 
 
-def generate_image(diary_text, artist_style, emotion, artist_prompt, example_picture):
+def parse_custom_string(input_str):
     '''
-    DALL-E 3를 사용하여 설명(description)에 기반한 이미지 생성
+    문자열을 단어로 파싱하여 리스트로 반환
     '''
-    keywords = extract_keywords(diary_text)
+    input_str = input_str.strip('{}').strip()
+
+    result = []
+    current_word = ''
+    inside_quotes = False
+
+    for char in input_str:
+        if char == "'":
+            inside_quotes = not inside_quotes
+            if not inside_quotes:
+                result.append(current_word.strip())
+                current_word = ''
+        elif char == ',' and not inside_quotes:
+            if current_word:
+                result.append(current_word.strip())
+                current_word = ''
+        else:
+            current_word += char
+
+    if current_word:
+        result.append(current_word.strip())
+
+    return result
+
+
+def generate_image(diary_text, artist_style, emotion, artist_prompt, period, detail_period, examples):
+    '''
+    DALL-E 3, Stable Diffusion 를 사용하여 설명(description)에 기반한 이미지 생성
+    '''
     translated_diary_text = translate_text(diary_text)
+    keywords = extract_keywords(translated_diary_text)
     translated_emotion = translate_text(emotion)
+    artist_style = translate_text(artist_style)
+    parse_examples = parse_custom_string(examples)
+    example_picture = random.choice(parse_examples)
 
-    base_prompt = (
-        f"Generate a detailed and image focusing on the landscape, objects, and atmosphere described in the diary entry: '{translated_diary_text}'. "
-    )
+    if period == 'ANIMATION':
+        base_prompt = (
+            f"Recreate a cinematic scene inspired by the description in the diary entry: '{translated_diary_text}'. "
+            f"The scene should be reminiscent of an iconic moment from a {example_picture}, capturing the same intensity, emotion, and visual style."
+        )
 
-    style_prompt = (
-        f"Accurately reflect the style of {artist_style}, incorporating key characteristics such as color palette, brush strokes, composition, lighting, and texture unique to this artist. "
-        f"Create an artwork that evokes the feeling and style of the example artwork: {example_picture}. "
-        f"The style should reflect the following description: {artist_prompt}. "
-    )
-    
-    detailed_prompt = (
-        f"Focus on emphasizing the essential elements mentioned in the diary, including: {keywords}. but do not include any word or text in the image. "
-        f"Ensure the image captures the essence of the diary entry without adding any additional details or elements not present in the text. "
-        f"Use a color scheme and lighting that reflects the mood of '{translated_emotion}', creating an ambiance that resonates with the diary's tone. "
-        f"Avoid including any people in the image, and strictly adhere to copyright and content policies."
-    )
+        style_prompt = (
+            f"Emulate the visual style of {example_picture} while adapting it to reflect the mood and composition of a famous movie scene. "
+            f"The scene should evoke the same emotion and visual impact as the example artwork: {example_picture} , but with a clear reference to a specific iconic film moment."
+            f"The Charactor of the movie should be in image."
+        )
 
-    query = f"{base_prompt} {style_prompt} {detailed_prompt}"
+        detailed_prompt = (
+            f"Ensure the image captures the essence of the diary entry while echoing the visual and emotional impact of the iconic movie scene. "
+            f"Use a color scheme, lighting, and composition that reflect the mood of '{translated_emotion}', but also align with the visual style of the chosen movie scene. "
+            f"Recreate the scene in a way that honors both the diary entry and the cinematic reference, blending the two seamlessly."
+            f"strictly adhere to copyright and content policies. "
+            f"Don't draw anything that isn't in {translated_diary_text}."
+        )
 
-    response = client.images.generate(
-        model="dall-e-3",
-        prompt=query,
-        size="1024x1024",
-        quality="standard",
-        n=1
-    )
-    return response.data[0].url
+        url = "https://api.stability.ai/v2beta/stable-image/generate/ultra"
+        headers = {
+            'authorization': f'Bearer {STABILITY_API_KEY}',
+            'accept': 'image/*'
+        }
+
+        query = f"{base_prompt} {style_prompt} {detailed_prompt}"
+
+        files = {
+            'prompt': (None, query),
+            'output_format': (None, 'png')
+        }
+
+        response = requests.post(url, headers=headers, files=files)
+        if response.status_code == 200:
+            print("Stable Diffusion 이미지 생성 완료")
+            return BytesIO(response.content)
+        else:
+            raise Exception(f"Failed to generate image: {response.text}")
+
+    elif period == 'CONTEMPORARY':
+        base_prompt = (
+            f"Generate a detailed and image focusing on the landscape, objects, and atmosphere described in the diary entry: '{translated_diary_text}'. "
+        )
+
+        style_prompt = (
+            f"Accurately reflect the style of {artist_style}, incorporating key characteristics such as color palette, brush strokes, composition, lighting, and texture unique to this artist. "
+            f"Painting like a painting of the {detail_period} time"
+            f"Create an artwork that evokes the feeling and style of the example artwork: {example_picture} by {artist_style}. "
+            f"The style should reflect the following description: {artist_prompt}. "
+        )
+
+        detailed_prompt = (
+            f"Focus on emphasizing the essential elements mentioned in the diary, including: {keywords}. but do not include any word or text in the image. "
+            f"Ensure the image captures the essence of the diary entry without adding any additional details or elements not present in the text. "
+            f"Use a color scheme and lighting that reflects the mood of '{translated_emotion}'"#, creating an ambiance that resonates with the diary's tone. and if you create human image, describe {translated_emotion} in his face. "
+            f"Avoid including any people in the image, and strictly adhere to copyright and content policies."
+            f"Don't draw what's not in {translated_diary_text}"
+        )
+
+        url = "https://api.stability.ai/v2beta/stable-image/generate/ultra"
+        headers = {
+            'authorization': f'Bearer {STABILITY_API_KEY}',
+            'accept': 'image/*'
+        }
+
+        query = f"{base_prompt} {style_prompt} {detailed_prompt}"
+
+        files = {
+            'prompt': (None, query),
+            'output_format': (None, 'png')
+        }
+
+        response = requests.post(url, headers=headers, files=files)
+        if response.status_code == 200:
+            print("Stable Diffusion 이미지 생성 완료")
+            return BytesIO(response.content)
+        else:
+            raise Exception(f"Failed to generate image: {response.text}")
+
+    else:
+        base_prompt = (
+            f"Generate a detailed and image focusing on the landscape, objects, and atmosphere described in the diary entry: '{translated_diary_text}'. "
+        )
+
+        style_prompt = (
+            f"Accurately reflect the style of {artist_style}, incorporating key characteristics such as color palette, brush strokes, composition, lighting, and texture unique to this artist. "
+            f"Painting like a painting of the {detail_period} time"
+            f"Create an artwork that evokes the feeling and style of the example artwork: {example_picture} by {artist_style}. "
+            f"The style should reflect the following description: {artist_prompt}. "
+        )
+
+        detailed_prompt = (
+            f"Focus on emphasizing the essential elements mentioned in the diary, including: {text}. but do not include any word or text in the image. "
+            f"Ensure the image captures the essence of the diary entry without adding any additional details or elements not present in the text. "
+            f"Use a color scheme and lighting that reflects the mood of '{translated_emotion}'"#, creating an ambiance that resonates with the diary's tone. and if you create human image, describe {translated_emotion} in his face. "
+            f"Avoid including any people in the image, and strictly adhere to copyright and content policies."
+            f"Don't draw what's not in {translated_diary_text}"
+        )
+
+        query = f"{base_prompt} {style_prompt} {detailed_prompt}"
+
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=query,
+            size="1024x1024",
+            quality="standard",
+            n=1
+        )
+        return response.data[0].url
 
 
 def send_response(user_id, diary_id):
@@ -124,15 +241,19 @@ def process_message(data):
         emotion = Emotion.objects.get(emotion_id=emotion_id)
 
         # description = generate_description(content, artist.artist_name, emotion.emotion_name)
-        image_url = generate_image(content, artist.artist_name, emotion.emotion_name, artist.artist_prompt, artist.example_picture)
+        image_url = generate_image(content, artist.artist_name, emotion.emotion_name, artist.artist_prompt, artist.period, artist.detail_period, artist.examples)
         
         print(f"Generated image URL: {image_url}")
 
         # S3 lock
         lock_name_s3 = f"lock:s3-access"
         with distributed_lock(lock_name_s3):
-            s3_url = S3ImgUploader.upload_from_url(image_url)
-
+            if isinstance(image_url, str):
+                s3_url = S3ImgUploader.upload_from_url(image_url)
+            else:
+                image_url.content_type = 'image/png'
+                s3_url = S3ImgUploader(image_url).upload()
+            
             if not s3_url:
                 raise Exception("Failed to upload image to S3")
 
@@ -188,14 +309,18 @@ def re_process_message(data):
         emotion = Emotion.objects.get(emotion_id=emotion_id)
 
         # description = generate_description(content, artist.artist_name, emotion.emotion_name)
-        image_url = generate_image(content, artist.artist_name, emotion.emotion_name, artist.artist_prompt, artist.example_picture)
+        image_url = generate_image(content, artist.artist_name, emotion.emotion_name, artist.artist_prompt, artist.period, artist.detail_period, artist.examples)
 
         print(f"Generated image URL: {image_url}")
-
+          
         lock_name = f"lock:re-diary:{user_id}:{diary_date}"
         with distributed_lock(lock_name):
-            s3_url = S3ImgUploader.upload_from_url(image_url)
-
+            if isinstance(image_url, str):
+                s3_url = S3ImgUploader.upload_from_url(image_url)
+            else:
+                image_url.content_type = 'image/png'
+                s3_url = S3ImgUploader(image_url).upload()
+            
             if not s3_url:
                 raise Exception("Failed to upload image to S3")
             
