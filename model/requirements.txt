@@ -27,10 +27,11 @@ httpcore==1.0.5
 httpx==0.27.0
 idna==3.7
 jmespath==1.0.1
+joblib==1.4.2
 JPype1==1.5.0
 kombu==5.3.7
-konlpy==0.6.0
 lxml==5.2.2
+nltk==3.9.1
 numpy==2.0.1
 openai==1.33.0
 packaging==24.1
@@ -41,6 +42,7 @@ pydantic_core==2.18.4
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 redis==5.0.8
+regex==2024.7.24
 requests==2.32.3
 s3transfer==0.10.1
 six==1.16.0

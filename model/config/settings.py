@@ -100,6 +100,9 @@ OPENAI_API_KEY = env('OPENAI_API_KEY')
 REDIS_HOST = env('REDIS_HOST')
 REDIS_PORT = int(env('REDIS_PORT'))
 
+# Stable Diffusion 관련 설정
+STABILITY_API_KEY = env('STABLE_DIFFUSION_API_KEY')
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
