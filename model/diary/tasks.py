@@ -195,7 +195,7 @@ def generate_image(diary_text, artist_style, emotion, artist_prompt, period, det
         )
 
         detailed_prompt = (
-            f"Focus on emphasizing the essential elements mentioned in the diary, including: {text}. but do not include any word or text in the image. "
+            f"Focus on emphasizing the essential elements mentioned in the diary, including: {keywords}. but do not include any word or text in the image. "
             f"Ensure the image captures the essence of the diary entry without adding any additional details or elements not present in the text. "
             f"Use a color scheme and lighting that reflects the mood of '{translated_emotion}'"#, creating an ambiance that resonates with the diary's tone. and if you create human image, describe {translated_emotion} in his face. "
             f"Avoid including any people in the image, and strictly adhere to copyright and content policies."
